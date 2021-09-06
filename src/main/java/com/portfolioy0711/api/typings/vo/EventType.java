@@ -1,4 +1,4 @@
-package com.portfolioy0711.api.typings;
+package com.portfolioy0711.api.typings.vo;
 
 
 public enum EventType {

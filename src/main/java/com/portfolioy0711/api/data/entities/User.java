@@ -1,4 +1,4 @@
-package com.portfolioy0711.api.model;
+package com.portfolioy0711.api.data.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

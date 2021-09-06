@@ -2,10 +2,10 @@ package com.portfolioy0711.api.data.seeder;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.portfolioy0711.api.data.PlaceRepository;
-import com.portfolioy0711.api.data.UserRepository;
-import com.portfolioy0711.api.model.Place;
-import com.portfolioy0711.api.model.User;
+import com.portfolioy0711.api.data.models.place.PlaceCmdRepository;
+import com.portfolioy0711.api.data.models.user.UserCmdRepository;
+import com.portfolioy0711.api.data.entities.Place;
+import com.portfolioy0711.api.data.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
@@ -20,10 +20,10 @@ import java.util.List;
 public class DataSeeer implements CommandLineRunner {
 
     @Autowired
-    UserRepository userRepository;
+    UserCmdRepository userRepository;
 
     @Autowired
-    PlaceRepository placeRepository;
+    PlaceCmdRepository placeRepository;
 
     public void seedUsers() throws IOException {
         File resource = new ClassPathResource("/seeds/users.json").getFile();

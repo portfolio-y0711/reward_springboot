@@ -1,23 +1,26 @@
-package com.portfolioy0711.api.typings;
+package com.portfolioy0711.api.typings.dto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Data
 @AllArgsConstructor
-public class EventDto {
+@NoArgsConstructor
+public class ReviewEventDto {
     @NotEmpty
     @ApiModelProperty(dataType = "EventType", example = "REVIEW")
-    EventType type;
+    String type;
 
     @NotEmpty
     @ApiModelProperty(position = 1, dataType = "String", example = "ADD")
-    ActionType action;
+    String action;
 
     @NotEmpty
     @ApiModelProperty(position = 2, dataType = "String", example = "240a0658-dc5f-4878-9831-ebb7b26687772")

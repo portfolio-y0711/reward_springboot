@@ -1,7 +1,7 @@
 package com.portfolioy0711.api.services;
 
-import com.portfolioy0711.api.data.UserRepository;
-import com.portfolioy0711.api.typings.UserRewardPointDto;
+import com.portfolioy0711.api.data.models.user.UserCmdRepository;
+import com.portfolioy0711.api.typings.response.UserRewardPointDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserCmdRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserCmdRepository userRepository) {
         this.userRepository = userRepository;
     }
 

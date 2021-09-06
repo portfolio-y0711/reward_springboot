@@ -1,6 +1,6 @@
 package com.portfolioy0711.api.config;
 
-import com.portfolioy0711.api.typings.ApiErrorResponse;
+import com.portfolioy0711.api.typings.response.ApiErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
