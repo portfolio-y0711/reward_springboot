@@ -9,8 +9,7 @@ import org.mockito.invocation.Invocation;
 
 import java.util.Collection;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 
 public class UserControllerTest {
@@ -28,7 +27,6 @@ public class UserControllerTest {
     public void getRewardPointTest() {
         userController.getUsers("3ede0ef2-92b7-4817-a5f3-0c575361f745");
         Collection<Invocation> invocations = Mockito.mockingDetails(userService).getInvocations();
-        System.out.println(invocations.size());
-        verify(userService, times(1));
+        verify(userService, times(1)).fetchUserRewardPoint(anyString());
     }
 }
