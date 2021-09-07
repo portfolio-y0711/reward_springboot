@@ -2,6 +2,7 @@ package com.portfolioy0711.api.data.models;
 
 import com.portfolioy0711.api.data.entities.QReward;
 import com.portfolioy0711.api.data.entities.QUser;
+import com.portfolioy0711.api.data.entities.User;
 import com.portfolioy0711.api.data.models.user.UserCmdRepository;
 import com.portfolioy0711.api.typings.dto.QRewardDto;
 import com.portfolioy0711.api.typings.dto.RewardDto;
@@ -23,6 +24,9 @@ public class UserModel {
     public UserModel(UserCmdRepository userCmdRepository, JPAQueryFactory jpaQueryFactory) {
         this.userCmdRepository = userCmdRepository;
         this.jpaQueryFactory = jpaQueryFactory;
+    }
+    public User save(User user) {
+        return userCmdRepository.save(user);
     }
 
     public Integer findUserRewardPoint(String userId) {

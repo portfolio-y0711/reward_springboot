@@ -28,21 +28,23 @@
 
 🚀 &nbsp; **_macOS_** :   
 
-_$ git clone https://github.com/portfolio-y0711/reward_backend_
+_$ git clone https://github.com/portfolio-y0711/reward_springboot_
 
-_$ yarn (or npm install)_
+_$ cd reward_springboot_
 
-_$ yarn start_
+_$ mvn package_
+
+_$ java -jar demo-0.0.1-SNAPSHOT.jar --server.port=8080_
 
 <br/>
 
 ☔ ️&nbsp; **_테스트 코드 실행_** :   
 
-* 유닛 테스트: $ yarn u
+* 유닛 테스트: $ mvn test
 
-* 통합 테스트: $ yarn i
+* 통합 테스트: $ mvn test
 
-* 시나리오 테스트: $ yarn i
+* 시나리오 테스트: $ mvn test
 
 <br/>
 
@@ -52,17 +54,14 @@ _$ yarn start_
 
 💻 &nbsp; **사용한 주요 언어 및 기술** :
 
-* nodejs v14.15 (runtime)
-* ts-node (transpiler)
-* express (server application)  
-* jest (test runner & framework)
-* cucumber (test specification tools)
-* supertest (server mocking test)
-* yup (scheme validation)
-* bunyan (as http request logger)
-* winston (as applicaiton logger)
-* swagger (api documentation)
-* sqlite3 (database)
+* java 1.8 (runtime)
+* Spring Web (server application)  
+* Spring Data JPA (database adaptor)
+* Spring QueryDSL (Domain Specific Language for JPQL)
+* Cucumber (test specification tools)
+* Logback (as applicaiton logger)
+* H2 (database)
+* Swagger (OpenAPI Documentation Tools)
 
 💻 &nbsp; **구현한 기능** :
 
@@ -162,68 +161,73 @@ CREATE INDEX IF NOT EXISTS index_rewards_reason ON REWARDS(reason);
 
 <br/>
 
-🎯 &nbsp; **_Open Closed Principle_** : 주요 구현부(포인트 적립 이벤트 서비스)에서, 라우팅 테이블 주입 및 라우팅 처리 (Event Router / Action Router)
+🎯 &nbsp; **_Open Closed Principle_** : 이벤트 타입, 액션에 따른 전략 객체 생성을 통한 이벤트 처리 알고리즘 변경 / 라우팅 테이블 주입 및 라우팅 처리 (Event Router / Action Router)로 유연한 설계 구현
 
 <br/>
 
   **_⌘ 관련 코드_**
 
-  _이벤트 핸들링 서비스_: [`src/services/event`](https://github.com/portfolio-y0711/reward_backend/tree/main/src/services/event)  
+  _이벤트 핸들링 서비스_: [`src/main/java/com/portfolioy0711/api/services`](https://github.com/portfolio-y0711/reward_springboot/tree/main/src/main/java/com/portfolioy0711/api/services)  
 
 
 ```ts
 // 이벤트 타입으로 분기 ("REVIEW")
-const EventRouter 
-  = (routes: IEventRoutes): IEventRouteService => {
-    const routeEvent = async (event: IEvent) => {
-      appLogger.info(`[EVENT: EventRouter] received '${event.type}' |type| event => relay event to '${event.type}' event |action| router\n`)
-      const { type } = event
-      await routes[type](event)
-    }
-    return {
-      routeEvent,
-    }
-  }
+@Service
+public class EventService {
 
-export const EventHandlerRoutes 
-  = (context: { db: IEventDatabase }): IEventRoutes => {
-    const { db } = context
-    return {
-      REVIEW: ReviewEventActionRouter(db).route,
-      BLAR_BLAR: BlarBlarEventActionRouter(db).route,
-    }
-  }
+  @Autowired
+  private ApplicationContext context;
 
-// 액션 타입으로 분기 ("ADD", "MOD", "DELETE")
-export const ComposeActionRoutes = (
-  createActionRoutes: (db: IEventDatabase) => IReviewEventActionRoutes,
-) => {
-  return (db: IEventDatabase) => {
-    const actionRoutes = createActionRoutes(db)
-    const route = async (eventInfo: IReviewPointEvent) => {
-      appLogger.info(`[EVENT: ReviewEventActionRouter] recevied '${eventInfo.action}' |action| event => relay event to '${eventInfo.action}' |action| handler\n`)
-      await actionRoutes[eventInfo.action](eventInfo)
-    }
-    return {
-      route,
-    }
+
+  public void route (String eventStr) throws ParseException, JsonProcessingException {
+      JSONParser jsonParser = new JSONParser();
+      JSONObject jsonObject = (JSONObject) jsonParser.parse(eventStr);
+      ObjectMapper objectMapper = new ObjectMapper();
+
+      if (jsonObject.containsKey("type") && jsonObject.containsKey("action")) {
+          String type = (String) jsonObject.get("type");
+          switch(type) {
+              case "REVIEW":
+                  ReviewEventDto reviewEvent = (ReviewEventDto) objectMapper.readValue(eventStr, new TypeReference<ReviewEventDto>(){});
+                  ReviewEventHandler reviewEventHandler = context.getBean(ReviewEventHandler.class);
+                  reviewEventHandler.route(reviewEvent);
+                  break;
+              case "BlarBlar":
+                  BlarBlarEventDto blarblarEvent = (BlarBlarEventDto) objectMapper.readValue(eventStr, new TypeReference<BlarBlarEventDto>(){});
+                  BlarBlarEventHandler blarblarEventHandler = context.getBean(BlarBlarEventHandler.class);
+                  blarblarEventHandler.route(blarblarEvent);
+                  break;
+          }
+      }
   }
 }
 
-export const reviewEventActionRoutes 
-  = (db: IEventDatabase): IReviewEventActionRoutes => {
-    return {
-      "ADD": AddReviewActionHandler(db),
-      "MOD": ModReviewActionHandler(db),
-      "DELETE": DelReviewActionHandler(db),
-    }
+
+// 액션 타입으로 분기 ("ADD", "MOD", "DELETE")
+@Component
+public class ReviewEventHandler implements EventHandler {
+  @Autowired
+  private ApplicationContext context;
+
+  private Map<String, ActionHandler> routes = new HashMap<>();
+
+  public ReviewEventHandler(ApplicationContext context) {
+      this.context = context;
+      this.routes.put("ADD", (ActionHandler) context.getBean(AddReviewActionHandler.class));
+      this.routes.put("MOD", (ActionHandler) context.getBean(ModReviewActionHandler.class));
+      this.routes.put("DEL", (ActionHandler) context.getBean(DelReviewActionHandler.class));
   }
+
+  public void route (Object event) {
+      String action = ((ReviewEventDto) event).getAction();
+      routes.get(action).handleEvent(event);
+  }
+}
 
 ```
 
 <br/>
 
-🎯 &nbsp; **_function composition (composition over inheritance)_** : function composition과 단방향 DI 주입을 통한 클린 아키텍처 구현
 
 <br/>
 
@@ -233,10 +237,10 @@ export const reviewEventActionRoutes
 
   **_⌘ 관련 코드_**
 
-  _유닛 테스트_: [`tests/_unit`](https://github.com/portfolio-y0711/reward_backend/tree/main/tests/_unit)  
+  _유닛 테스트_: [`src/test/java/com/portfolioy0711.api/_unit`](https://github.com/portfolio-y0711/reward_backend/tree/main/tests/_unit)  
 
-  _통합 테스트_: [`tests/_i11`](https://github.com/portfolio-y0711/reward_backend/tree/main/tests/_i11)  
+  _통합 테스트_: [`src/test/java/com/portfolioy0711.api/_i11`](https://github.com/portfolio-y0711/reward_backend/tree/main/tests/_i11)  
 
-  _시나리오 테스트_: [`tests/_usecase`](https://github.com/portfolio-y0711/reward_backend/tree/main/tests/_usecase)  
+  _시나리오 테스트_: [`src/test/java/com/portfolioy0711.api/_usecase`](https://github.com/portfolio-y0711/reward_backend/tree/main/tests/_usecase)  
 
 <br/> -->

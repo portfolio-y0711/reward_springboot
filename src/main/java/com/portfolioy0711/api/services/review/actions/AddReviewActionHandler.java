@@ -68,8 +68,8 @@ public class AddReviewActionHandler implements ActionHandler {
                     .reviewId(eventInfo.getReviewId())
                     .content(eventInfo.getContent())
                     .rewarded(1)
-                    .userId(eventInfo.getUserId())
-                    .placeId(eventInfo.getPlaceId())
+//                    .userId(eventInfo.getUserId())
+//                    .placeId(eventInfo.getPlaceId())
                     .build()
             );
 
