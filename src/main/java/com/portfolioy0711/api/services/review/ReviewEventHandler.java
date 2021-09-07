@@ -5,7 +5,6 @@ import com.portfolioy0711.api.services.review.actions.ModReviewActionHandler;
 import com.portfolioy0711.api.typings.ActionHandler;
 import com.portfolioy0711.api.typings.EventHandler;
 import com.portfolioy0711.api.typings.dto.ReviewEventDto;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;

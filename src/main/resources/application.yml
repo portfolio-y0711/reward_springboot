@@ -4,6 +4,8 @@ spring:
       enabled: true
     restart:
       enabled: true
+#  profiles:
+#    active: production
 
   h2:
     console:

@@ -31,7 +31,6 @@ public class EventService {
             String type = (String) jsonObject.get("type");
             switch(type) {
                 case "REVIEW":
-                    System.out.println(eventStr);
                     ReviewEventDto reviewEvent = (ReviewEventDto) objectMapper.readValue(eventStr, new TypeReference<ReviewEventDto>(){});
                     ReviewEventHandler reviewEventHandler = context.getBean(ReviewEventHandler.class);
                     reviewEventHandler.route(reviewEvent);

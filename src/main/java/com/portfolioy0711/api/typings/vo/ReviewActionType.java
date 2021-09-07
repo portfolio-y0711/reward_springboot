@@ -1,6 +1,6 @@
 package com.portfolioy0711.api.typings.vo;
 
-public enum ActionType {
+public enum ReviewActionType {
     ADD {
         @Override
         public String toString() {
