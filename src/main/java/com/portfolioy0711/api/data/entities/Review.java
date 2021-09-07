@@ -22,6 +22,7 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     User user;
+
     Integer rewarded;
 
     @Builder

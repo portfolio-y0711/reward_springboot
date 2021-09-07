@@ -22,6 +22,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     List<Review> reviewList = new ArrayList<Review>();
 
+    @OneToMany(mappedBy = "user")
+    List<Reward> rewardList = new ArrayList<>();
+
     @Builder
     public User(String userId, String name, Integer rewardPoint) {
         this.userId = userId;

@@ -7,9 +7,6 @@ import org.json.simple.parser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.mockito.invocation.Invocation;
-
-import java.util.Collection;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;

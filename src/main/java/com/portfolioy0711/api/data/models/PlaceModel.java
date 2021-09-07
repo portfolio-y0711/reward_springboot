@@ -1,6 +1,7 @@
 package com.portfolioy0711.api.data.models;
 
 import com.portfolioy0711.api.data.entities.Place;
+import com.portfolioy0711.api.data.entities.QPlace;
 import com.portfolioy0711.api.data.models.place.PlaceCmdRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ public class PlaceModel {
     PlaceCmdRepository placeCmdRepository;
 
     @Autowired
-    private JPAQueryFactory jpaQueryFactory;
+    private JPAQueryFactory query;
 
     public Integer findBonusPoint(String placeId) {
        return 0;
@@ -23,4 +24,14 @@ public class PlaceModel {
     public Place save(Place place) {
         return placeCmdRepository.save(place);
     }
+
+    public Place findPlaceByPlaceId(String placeId) {
+        QPlace qPlace = QPlace.place;
+        return query
+                .select(qPlace)
+                .from(qPlace)
+                .where(qPlace.placeId.eq(placeId))
+                .fetchOne();
+    }
+
 }

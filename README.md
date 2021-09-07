@@ -10,7 +10,7 @@
 
 <br/>
 
-<!-- **목차**
+**목차**
 
 프로그램 작동법
 
@@ -22,11 +22,11 @@
 
 <br/>
 
-### 1. 프로그램 작동법 
+### 1. 프로그램 작동법
 
 <br/>
 
-🚀 &nbsp; **_macOS_** :   
+🚀 &nbsp; **_macOS_** :
 
 _$ git clone https://github.com/portfolio-y0711/reward_springboot_
 
@@ -38,13 +38,13 @@ _$ java -jar demo-0.0.1-SNAPSHOT.jar --server.port=8080_
 
 <br/>
 
-☔ ️&nbsp; **_테스트 코드 실행_** :   
+☔ ️&nbsp; **_테스트 코드 실행_** :
 
-* 유닛 테스트: $ mvn test
+- 유닛 테스트: $ mvn test
 
-* 통합 테스트: $ mvn test
+- 통합 테스트: $ mvn test
 
-* 시나리오 테스트: $ mvn test
+- 시나리오 테스트: $ mvn test
 
 <br/>
 
@@ -54,28 +54,28 @@ _$ java -jar demo-0.0.1-SNAPSHOT.jar --server.port=8080_
 
 💻 &nbsp; **사용한 주요 언어 및 기술** :
 
-* java 1.8 (runtime)
-* Spring Web (server application)  
-* Spring Data JPA (database adaptor)
-* Spring QueryDSL (Domain Specific Language for JPQL)
-* Cucumber (test specification tools)
-* Logback (as applicaiton logger)
-* H2 (database)
-* Swagger (OpenAPI Documentation Tools)
+- java 1.8 (runtime)
+- Spring Web (server application)
+- Spring Data JPA (database adaptor)
+- Spring QueryDSL (Domain Specific Language for JPQL)
+- Cucumber (test specification tools)
+- Logback (as applicaiton logger)
+- H2 (database)
+- Swagger (OpenAPI Documentation Tools)
 
 💻 &nbsp; **구현한 기능** :
 
-* /events 리뷰 추가|변경|삭제 이벤트 처리 엔드포인트 
+- /events 리뷰 추가|변경|삭제 이벤트 처리 엔드포인트
 
-  - 트랜잭션 처리 
+  - 트랜잭션 처리
 
   - Context Error / Validation Error 처리 (리뷰 중복)
 
   - HTTP Request 로그 + Application 로그
 
-* /users/{userId}/rewardPoint 사용자의 현재 포인트 총계
+- /users/{userId}/rewardPoint 사용자의 현재 포인트 총계
 
-* /users/{userId}/rewards 사용자의 포인트 누적 이력
+- /users/{userId}/rewards 사용자의 포인트 누적 이력
 
 <br/>
 
@@ -83,18 +83,27 @@ _$ java -jar demo-0.0.1-SNAPSHOT.jar --server.port=8080_
 
 <br/>
 
+to be completed
+
+<br/>
+
+<!--
+<br/>
+
 🏗 &nbsp; **_DDL Script_** :
 
 ```sql
 # PLACES(장소)
 
-CREATE TABLE IF NOT EXISTS 
+CREATE TABLE IF NOT EXISTS
+
     PLACES (
-      placeId VARCHAR PRIMARY KEY, 
+      placeId VARCHAR PRIMARY KEY,
       country VARCHAR NOT NULL,
       name VARCHAR NOT NULL,
       bonusPoint INTEGER NOT NULL,
       timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
+
 ) WITHOUT ROWID;
 
 CREATE INDEX IF NOT EXISTS index_places_country ON PLACES(country);
@@ -103,9 +112,10 @@ CREATE INDEX IF NOT EXISTS index_places_country_name ON PLACES(country,name);
 
 # USERS(사용자)
 
-CREATE TABLE IF NOT EXISTS 
+CREATE TABLE IF NOT EXISTS
+
     USERS (
-      userId VARCHAR PRIMARY KEY, 
+      userId VARCHAR PRIMARY KEY,
       name VARCHAR NOT NULL,
       rewardPoint INTEGER NOT NULL,
       timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
@@ -115,9 +125,10 @@ CREATE INDEX IF NOT EXISTS index_users_name ON users(name);
 
 # REVIEWS(사용자 작성 리뷰)
 
-CREATE TABLE IF NOT EXISTS 
+CREATE TABLE IF NOT EXISTS
+
     REVIEWS (
-      reviewId VARCHAR PRIMARY KEY, 
+      reviewId VARCHAR PRIMARY KEY,
       placeId INTEGER,
       content VARCHAR NOT NULL,
       attachedPhotoIds VARCHAR NOT NULL,
@@ -138,10 +149,11 @@ CREATE INDEX IF NOT EXISTS index_reviews_rewarded ON REVIEWS(rewarded);
 
 # REWARDS(포인트 적립 기록)
 
-CREATE TABLE IF NOT EXISTS 
+CREATE TABLE IF NOT EXISTS
+
     REWARDS (
       rewardId VARCHAR PRIMARY KEY,
-      userId VARCHAR, 
+      userId VARCHAR,
       reviewId VARCHAR,
       operation VARCHAR NOT NULL,
       pointDelta INTEGER NOT NULL,
@@ -156,6 +168,7 @@ CREATE TABLE IF NOT EXISTS
 
 CREATE INDEX IF NOT EXISTS index_rewards_reason ON REWARDS(reason);
 ```
+-->
 
 ### 4. 설계상 주안점, 워크플로우
 
@@ -165,10 +178,9 @@ CREATE INDEX IF NOT EXISTS index_rewards_reason ON REWARDS(reason);
 
 <br/>
 
-  **_⌘ 관련 코드_**
+**_⌘ 관련 코드_**
 
-  _이벤트 핸들링 서비스_: [`src/main/java/com/portfolioy0711/api/services`](https://github.com/portfolio-y0711/reward_springboot/tree/main/src/main/java/com/portfolioy0711/api/services)  
-
+_이벤트 핸들링 서비스_: [`src/main/java/com/portfolioy0711/api/services`](https://github.com/portfolio-y0711/reward_springboot/tree/main/src/main/java/com/portfolioy0711/api/services)
 
 ```ts
 // 이벤트 타입으로 분기 ("REVIEW")
@@ -228,19 +240,18 @@ public class ReviewEventHandler implements EventHandler {
 
 <br/>
 
-
 <br/>
 
 🎯 &nbsp; **_BDD / TDD driven_** : 유닛 테스트 코드로 scaffolding 한 이후, 통합 테스트와 함께 구현체를 작성해 나가는 테스트 주도 개발 워크플로우 사용
 
 <br/>
 
-  **_⌘ 관련 코드_**
+**_⌘ 관련 코드_**
 
-  _유닛 테스트_: [`src/test/java/com/portfolioy0711.api/_unit`](https://github.com/portfolio-y0711/reward_backend/tree/main/tests/_unit)  
+_유닛 테스트_: [`src/test/java/com/portfolioy0711.api/_unit`](https://github.com/portfolio-y0711/reward_backend/tree/main/tests/_unit)
 
-  _통합 테스트_: [`src/test/java/com/portfolioy0711.api/_i11`](https://github.com/portfolio-y0711/reward_backend/tree/main/tests/_i11)  
+_통합 테스트_: [`src/test/java/com/portfolioy0711.api/_i11`](https://github.com/portfolio-y0711/reward_backend/tree/main/tests/_i11)
 
-  _시나리오 테스트_: [`src/test/java/com/portfolioy0711.api/_usecase`](https://github.com/portfolio-y0711/reward_backend/tree/main/tests/_usecase)  
+_시나리오 테스트_: [`src/test/java/com/portfolioy0711.api/_usecase`](https://github.com/portfolio-y0711/reward_backend/tree/main/tests/_usecase)
 
-<br/> -->
+<br/>

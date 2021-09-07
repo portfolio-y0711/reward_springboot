@@ -19,7 +19,6 @@ import javax.transaction.Transactional;
 
 
 @Component
-@RequiredArgsConstructor
 public class AddReviewActionHandler implements ActionHandler {
 
     @Autowired
@@ -28,52 +27,52 @@ public class AddReviewActionHandler implements ActionHandler {
     @Transactional
     @Override
     public void handleEvent(Object event) {
-        ReviewEventDto eventInfo = (ReviewEventDto) event;
-        ReviewModel reviewModel = eventDatabase.getReviewModel();
-
-        boolean isDuplicate = reviewModel.checkRecordExistsByReviewId(eventInfo.getReviewId());
-        Integer reviewCount = reviewModel.findReviewCountsByPlaceId(eventInfo.getPlaceId());
-
-        boolean isRewardable = (reviewCount == 0);
-
-        if (isRewardable) {
-            PlaceModel placeModel = eventDatabase.getPlaceModel();
-            Integer bonusPoint = placeModel.findBonusPoint(eventInfo.getPlaceId());
-
-            Integer contentPoint = eventInfo.getContent().length() > 1 ? 1 : 0;
-            Integer photosPoint = eventInfo.getAttachedPhotoIds().length > 1 ? 1 : 0;
-            Integer addPoint = contentPoint + photosPoint + bonusPoint;
-
-            UserModel userModel = eventDatabase.getUserModel();
-            Integer currPoint = userModel.findUserRewardPoint(eventInfo.getUserId());
-
-            String addOperation = ReviewActionType.ADD.name();
-            String addReason = RewardReasonType.NEW.name();
-
-            RewardModel rewardModel = eventDatabase.getRewardModel();
-
-            rewardModel.save(
-                Reward
-                    .builder()
-                    .operation("SUB")
-                    .pointDelta(addPoint)
-                    .reason(ReviewActionType.ADD.name())
-                    .rewardId(eventInfo.getReviewId())
-                    .build()
-            );
-
-            reviewModel.save(
-                Review
-                    .builder()
-                    .reviewId(eventInfo.getReviewId())
-                    .content(eventInfo.getContent())
-                    .rewarded(1)
-//                    .userId(eventInfo.getUserId())
-//                    .placeId(eventInfo.getPlaceId())
-                    .build()
-            );
-
-            userModel.updateRewardPoint(eventInfo.getUserId(), currPoint + addPoint);
-        }
+//        ReviewEventDto eventInfo = (ReviewEventDto) event;
+//        ReviewModel reviewModel = eventDatabase.getReviewModel();
+//
+//        boolean isDuplicate = reviewModel.checkRecordExistsByReviewId(eventInfo.getReviewId());
+//        Integer reviewCount = reviewModel.findReviewCountsByPlaceId(eventInfo.getPlaceId());
+//
+//        boolean isRewardable = (reviewCount == 0);
+//
+//        if (isRewardable) {
+//            PlaceModel placeModel = eventDatabase.getPlaceModel();
+//            Integer bonusPoint = placeModel.findBonusPoint(eventInfo.getPlaceId());
+//
+//            Integer contentPoint = eventInfo.getContent().length() > 1 ? 1 : 0;
+//            Integer photosPoint = eventInfo.getAttachedPhotoIds().length > 1 ? 1 : 0;
+//            Integer addPoint = contentPoint + photosPoint + bonusPoint;
+//
+//            UserModel userModel = eventDatabase.getUserModel();
+//            Integer currPoint = userModel.findUserRewardPoint(eventInfo.getUserId());
+//
+//            String addOperation = ReviewActionType.ADD.name();
+//            String addReason = RewardReasonType.NEW.name();
+//
+//            RewardModel rewardModel = eventDatabase.getRewardModel();
+//
+//            rewardModel.save(
+//                Reward
+//                    .builder()
+//                    .operation("SUB")
+//                    .pointDelta(addPoint)
+//                    .reason(ReviewActionType.ADD.name())
+//                    .rewardId(eventInfo.getReviewId())
+//                    .build()
+//            );
+//
+//            reviewModel.save(
+//                Review
+//                    .builder()
+//                    .reviewId(eventInfo.getReviewId())
+//                    .content(eventInfo.getContent())
+//                    .rewarded(1)
+////                    .userId(eventInfo.getUserId())
+////                    .placeId(eventInfo.getPlaceId())
+//                    .build()
+//            );
+//
+//            userModel.updateRewardPoint(eventInfo.getUserId(), currPoint + addPoint);
+//        }
     }
 }

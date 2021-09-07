@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -17,7 +14,7 @@ public class Reward {
     @Id
     String rewardId;
 //    String userId;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     User user;
     String operation;
@@ -25,10 +22,8 @@ public class Reward {
     String reason;
 
     @Builder
-//    public Reward(String rewardId, String userId, String operation, Integer pointDelta, String reason) {
     public Reward(String rewardId, User user, String operation, Integer pointDelta, String reason) {
         this.rewardId = rewardId;
-//        this.userId = userId;
         this.user = user;
         this.operation = operation;
         this.pointDelta = pointDelta;
