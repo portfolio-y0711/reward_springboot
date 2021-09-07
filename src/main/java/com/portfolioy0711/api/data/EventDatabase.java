@@ -11,16 +11,18 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 public class EventDatabase {
-    @Autowired
     private UserModel userModel;
     private PlaceModel placeModel;
     private ReviewModel reviewModel;
     private RewardModel rewardModel;
 
-    public void print(String aa) {
-        System.out.println(aa);
-        System.out.println(userModel);
+    public EventDatabase(UserModel userModel, PlaceModel placeModel, ReviewModel reviewModel, RewardModel rewardModel) {
+        this.userModel = userModel;
+        this.placeModel = placeModel;
+        this.reviewModel = reviewModel;
+        this.rewardModel = rewardModel;
     }
+
     public UserModel getUserModel () {
         return this.userModel;
     }

@@ -5,8 +5,10 @@ import com.portfolioy0711.api.data.models.place.PlaceCmdRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
+@Component
 public class PlaceModel {
     @Autowired
     PlaceCmdRepository placeCmdRepository;

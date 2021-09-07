@@ -2,16 +2,12 @@ package com.portfolioy0711.api.typings.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class ReviewEventDto {
     @NotEmpty
@@ -40,4 +36,15 @@ public class ReviewEventDto {
     @NotEmpty
     @ApiModelProperty(position = 6, dataType = "String", example = "2e4baf1c-5acb-4efb-a1af-eddada31b00f")
     String placeId;
+
+    @Builder
+    public ReviewEventDto(@NotEmpty String type, @NotEmpty String action, @NotEmpty String reviewId, @NotEmpty String content, String[] attachedPhotoIds, @NotEmpty String userId, @NotEmpty String placeId) {
+        this.type = type;
+        this.action = action;
+        this.reviewId = reviewId;
+        this.content = content;
+        this.attachedPhotoIds = attachedPhotoIds;
+        this.userId = userId;
+        this.placeId = placeId;
+    }
 }
