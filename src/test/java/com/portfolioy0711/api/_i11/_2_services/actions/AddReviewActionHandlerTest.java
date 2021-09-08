@@ -79,7 +79,6 @@ public class AddReviewActionHandlerTest {
         if (isRewardable) {
             placeModel = eventDatabase.getPlaceModel();
             Place place = placeModel.findPlaceByPlaceId(eventInfo.getPlaceId());
-            System.out.println(place);
 
             Integer bonusPoint = place.getBonusPoint();
 
@@ -106,11 +105,6 @@ public class AddReviewActionHandlerTest {
                     .build()
             );
 
-            System.out.println(user);
-            System.out.println(place);
-
-
-//            System.out.println(
             reviewModel.save(
                 Review
                     .builder()
@@ -120,7 +114,6 @@ public class AddReviewActionHandlerTest {
                     .user(user)
                     .place(place)
                     .build()
-//            );
             );
         }
     }

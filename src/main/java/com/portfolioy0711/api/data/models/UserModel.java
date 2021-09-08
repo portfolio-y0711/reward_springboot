@@ -1,9 +1,6 @@
 package com.portfolioy0711.api.data.models;
 
-import com.portfolioy0711.api.data.entities.QReward;
-import com.portfolioy0711.api.data.entities.QUser;
-import com.portfolioy0711.api.data.entities.Reward;
-import com.portfolioy0711.api.data.entities.User;
+import com.portfolioy0711.api.data.entities.*;
 import com.portfolioy0711.api.data.models.user.UserCmdRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +15,11 @@ public class UserModel {
     UserCmdRepository userCmdRepository;
 
     @Autowired
-    private JPAQueryFactory jpaQueryFactory;
+    private JPAQueryFactory query;
 
-    public UserModel(UserCmdRepository userCmdRepository, JPAQueryFactory jpaQueryFactory) {
+    public UserModel(UserCmdRepository userCmdRepository, JPAQueryFactory query) {
         this.userCmdRepository = userCmdRepository;
-        this.jpaQueryFactory = jpaQueryFactory;
+        this.query = query;
     }
 
     public User save(User user) {
@@ -31,14 +28,14 @@ public class UserModel {
 
     public Integer findUserRewardPoint(String userId) {
         QUser qUser = QUser.user;
-        return jpaQueryFactory
+        return query
                 .select(qUser.rewardPoint)
                 .from(qUser)
                 .where(qUser.userId.eq(userId)).fetchOne();
     }
     public List<Reward> findUserRewards(String userId) {
         QReward qReward = QReward.reward;
-        return jpaQueryFactory
+        return query
                 .select(qReward)
                 .from(qReward)
                 .fetch();
@@ -46,7 +43,7 @@ public class UserModel {
 
     public long updateRewardPoint(String userId, Integer rewardPoint) {
        QUser qUser = QUser.user;
-       return jpaQueryFactory
+       return query
                .update(qUser)
                .where(qUser.userId.eq(userId))
                .set(qUser.rewardPoint, rewardPoint)
@@ -55,9 +52,10 @@ public class UserModel {
 
     public User findUserByUserId(String userId) {
         QUser qUser = QUser.user;
-        return jpaQueryFactory
+        return query
                 .selectFrom(qUser)
                 .where(qUser.userId.eq(userId))
                 .fetchOne();
     }
+
 }

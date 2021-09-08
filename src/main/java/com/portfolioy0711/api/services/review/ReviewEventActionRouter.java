@@ -15,9 +15,9 @@ import java.util.Map;
 
 
 @Component
-@RequiredArgsConstructor
 public class ReviewEventActionRouter implements EventHandler {
 
+    @Autowired
     private ApplicationContext context;
 
     Map<String, ActionHandler> routes;

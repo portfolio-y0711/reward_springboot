@@ -40,11 +40,7 @@ _$ java -jar demo-0.0.1-SNAPSHOT.jar --server.port=8080_
 
 ☔ ️&nbsp; **_테스트 코드 실행_** :
 
-- 유닛 테스트: $ mvn test
-
-- 통합 테스트: $ mvn test
-
-- 시나리오 테스트: $ mvn test
+- 유닛 테스트 / 통합 테스트 / 시나리오 테스트: $ mvn test
 
 <br/>
 
@@ -83,9 +79,7 @@ _$ java -jar demo-0.0.1-SNAPSHOT.jar --server.port=8080_
 
 <br/>
 
-to be completed
-
-<br/>
+![스키마](./scheme.png)
 
 <!--
 <br/>
@@ -248,10 +242,10 @@ public class ReviewEventHandler implements EventHandler {
 
 **_⌘ 관련 코드_**
 
-_유닛 테스트_: [`src/test/java/com/portfolioy0711.api/_unit`](https://github.com/portfolio-y0711/reward_backend/tree/main/tests/_unit)
+_유닛 테스트_: [`src/test/java/com/portfolioy0711.api/_unit`](https://github.com/portfolio-y0711/reward_springboot/tree/main/src/test/java/com/portfolioy0711/api/_unit)
 
-_통합 테스트_: [`src/test/java/com/portfolioy0711.api/_i11`](https://github.com/portfolio-y0711/reward_backend/tree/main/tests/_i11)
+_통합 테스트_: [`src/test/java/com/portfolioy0711.api/_i11`](https://github.com/portfolio-y0711/reward_springboot/tree/main/src/test/java/com/portfolioy0711/api/_i11)
 
-_시나리오 테스트_: [`src/test/java/com/portfolioy0711.api/_usecase`](https://github.com/portfolio-y0711/reward_backend/tree/main/tests/_usecase)
+_시나리오 테스트_: [`src/test/java/com/portfolioy0711.api/_usecase`](https://github.com/portfolio-y0711/reward_springboot/tree/main/src/test/java/com/portfolioy0711/api/_usecase)
 
 <br/>

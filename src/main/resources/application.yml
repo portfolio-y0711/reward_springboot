@@ -28,7 +28,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-    show-sql: true
+#    show-sql: true
     properties:
       use-sql-comments: true
     database-platform:

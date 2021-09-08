@@ -13,13 +13,13 @@ public class Review {
     @Id
     String reviewId;
 //    String placeId;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Place.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "placeId")
     Place place;
 
     String content;
 //    String userId;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     User user;
 
