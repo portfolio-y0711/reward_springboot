@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -32,5 +33,20 @@ public class User {
         this.userId = userId;
         this.name = name;
         this.rewardPoint = rewardPoint;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userId.equals(user.userId) &&
+                name.equals(user.name) &&
+                rewardPoint.equals(user.rewardPoint);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, name, rewardPoint);
     }
 }

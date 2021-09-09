@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.portfolioy0711.api.data.EventDatabase;
 import com.portfolioy0711.api.data.entities.Place;
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.portfolioy0711.api.data.entities.Review;
-import com.portfolioy0711.api.data.entities.Reward;
 import com.portfolioy0711.api.data.entities.User;
 import com.portfolioy0711.api.data.models.PlaceModel;
 import com.portfolioy0711.api.data.models.ReviewModel;
@@ -15,12 +15,14 @@ import com.portfolioy0711.api.data.models.RewardModel;
 import com.portfolioy0711.api.data.models.UserModel;
 import com.portfolioy0711.api.services.review.actions.AddReviewActionHandler;
 import com.portfolioy0711.api.typings.dto.ReviewEventDto;
+import com.portfolioy0711.api.typings.response.UserRewardReponse;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Ignore;
+import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 
@@ -122,34 +124,37 @@ public class ScenariosAddSteps {
 
     @Transactional
     @Then("유저의 리워드 레코드가 아래와 같이 생성됨_1")
-    public void rewardCreated(List<Map<String,String>> rewards) throws JsonProcessingException {
-        Map<String, String> reward = rewards.get(0);
-        String userId = reward.get("userId");
-        String reviewId = reward.get("reviewId");
-        String operation = reward.get("operation");
-        String pointDelta = reward.get("pointDelta");
-        String reason = reward.get("reason");
-
-        Reward rewardRecord =  rewardModel.findLatestUserReviewRewardByReviewId(userId, reviewId);
-
-        assertEquals(rewardRecord, "");
-//        Reward rewardRecord =  rewardModel.findRewards().get(0);
-//        ObjectMapper mapper = new ObjectMapper();
-//        String rewardStr = mapper.writeValueAsString(rewardRecord);
-//
-//        assertEquals(rewardStr, mapper.writeValueAsString(reward));
+    public void rewardCreated(List<UserRewardReponse> rewards) throws JsonProcessingException {
+        UserRewardReponse expected = rewards.get(0);
+        UserRewardReponse actual =  rewardModel.findLatestUserReviewRewardByReviewId(expected.getUserId(), expected.getReviewId());
+        String[] excludeFields = new String[]{ "rewardId" };
+        assertTrue(new ReflectionEquals(expected, excludeFields).matches(actual));
     }
 
     @Transactional
     @And("유저의 포인트 총점이 아래와 같아짐_1")
-    public void order_response_equals(List<Map<String, String>> rewardPoints){
-//        assertEquals("!!!", rewardPoints);
+    public void order_response_equals(List<Map<String, String>> rewardPointInfo){
+        String userId = rewardPointInfo.get(0).get("userId");
+        int expected = Integer.parseInt(rewardPointInfo.get(0).get("rewardPoint"));
+        int actual = userModel.findUserRewardPoint(userId);
+        assertEquals(expected, actual);
     }
 
     @Transactional
     @And("유저의 리뷰 레코드가 아래와 같이 생성됨_1")
     public void order_response_includes(List<Map<String, String>> reviews){
-//        assertEquals("!!!", reviews);
+        Map<String, String> review = reviews.get(0);
+        String reviewId = review.get("reviewId");
+        String placeId = review.get("placeId");
+        String contentId = review.get("content");
+        String[] attachedPhotoIds = review.get("attachedPhotoIds").split(",");
+        String userId = review.get("userId");
+        int rewarded = Integer.parseInt(review.get("rewarded"));
+
+//        Review review = reviewModel.findReviewByReviewId(reviewId);
+
+
+        assertEquals(rewarded, "");
     }
 }
 

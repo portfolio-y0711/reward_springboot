@@ -2,7 +2,7 @@ package com.portfolioy0711.api.data.models;
 
 import com.portfolioy0711.api.data.entities.*;
 import com.portfolioy0711.api.data.models.user.UserCmdRepository;
-import com.portfolioy0711.api.typings.response.QUserRewardDto;
+import com.portfolioy0711.api.typings.response.QUserRewardReponse;
 import com.portfolioy0711.api.typings.response.UserRewardReponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class UserModel {
         QReward reward = QReward.reward;
 
         return query
-                .select(new QUserRewardDto(reward.rewardId, reward.reviewId, reward.operation, reward.pointDelta, reward.reason))
+                .select(new QUserRewardReponse(reward.rewardId, reward.user().userId, reward.reviewId, reward.operation, reward.pointDelta, reward.reason))
                 .innerJoin(user.reviewList,review)
                 .innerJoin(user.rewardList,reward)
                 .from(user)

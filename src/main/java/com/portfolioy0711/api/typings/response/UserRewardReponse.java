@@ -2,14 +2,18 @@ package com.portfolioy0711.api.typings.response;
 
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Getter
+import java.util.Objects;
+
+@Data
 @NoArgsConstructor
 public class UserRewardReponse {
     @ApiModelProperty(value = "리워드 아이디", required = true)
     String rewardId;
+    @ApiModelProperty(value = "유저 아이디", required = true)
+    String userId;
     @ApiModelProperty(value = "리뷰글 아이디", required = true)
     String reviewId;
     @ApiModelProperty(value = "수행된 연산", required = true)
@@ -20,8 +24,9 @@ public class UserRewardReponse {
     String reason;
 
     @QueryProjection
-    public UserRewardReponse(String rewardId, String reviewId, String operation, Integer pointDelta, String reason) {
+    public UserRewardReponse(String rewardId, String userId, String reviewId, String operation, Integer pointDelta, String reason) {
         this.rewardId = rewardId;
+        this.userId = userId;
         this.reviewId = reviewId;
         this.operation = operation;
         this.pointDelta = pointDelta;

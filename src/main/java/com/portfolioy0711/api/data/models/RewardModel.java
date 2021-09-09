@@ -4,7 +4,7 @@ import com.portfolioy0711.api.data.entities.QReward;
 import com.portfolioy0711.api.data.entities.QUser;
 import com.portfolioy0711.api.data.entities.Reward;
 import com.portfolioy0711.api.data.models.reward.RewardCmdRepository;
-import com.portfolioy0711.api.typings.response.QUserRewardDto;
+import com.portfolioy0711.api.typings.response.QUserRewardReponse;
 import com.portfolioy0711.api.typings.response.UserRewardReponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +25,14 @@ public class RewardModel {
         return rewardCmdRepository.save(reward);
     }
 
-    public Reward findLatestUserReviewRewardByReviewId(String userId, String reviewId) {
+    public UserRewardReponse findLatestUserReviewRewardByReviewId(String userId, String reviewId) {
         QUser user = QUser.user;
         QReward reward = QReward.reward;
-        return query.select(reward)
+        return query.select(new QUserRewardReponse(reward.rewardId, reward.user().userId, reward.reviewId, reward.operation, reward.pointDelta, reward.reason))
                 .from(reward)
-                .where(reward.rewardId.eq(reviewId))
-                .leftJoin(user).on(reward.user().eq(user))
+                .join(reward.user(), user)
+                .where(reward.user().userId.eq(userId))
+                .where(reward.reviewId.eq(reviewId))
                 .fetchOne();
     }
 
@@ -39,7 +40,7 @@ public class RewardModel {
         QReward reward = QReward.reward;
         QUser user = QUser.user;
 
-        return query.select(new QUserRewardDto(reward.rewardId, reward.reviewId, reward.operation, reward.pointDelta, reward.reason))
+        return query.select(new QUserRewardReponse(reward.rewardId, reward.user().userId, reward.reviewId, reward.operation, reward.pointDelta, reward.reason))
                 .from(reward)
                 .join(reward.user(), user)
                 .where(reward.user().userId.eq(userId))

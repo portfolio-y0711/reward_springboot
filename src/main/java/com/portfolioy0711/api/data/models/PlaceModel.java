@@ -18,7 +18,7 @@ public class PlaceModel {
     private JPAQueryFactory query;
 
     public Integer findBonusPoint(String placeId) {
-       return 0;
+        return 0;
     }
 
     public Place save(Place place) {

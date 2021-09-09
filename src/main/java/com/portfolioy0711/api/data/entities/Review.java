@@ -1,10 +1,9 @@
 package com.portfolioy0711.api.data.entities;
 
 import lombok.*;
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -13,25 +12,29 @@ import java.util.List;
 @ToString(of = { "reviewId", "content", "rewarded" } )
 public class Review {
     @Id
-    String reviewId;
+    private String reviewId;
 
     @ManyToOne(targetEntity = Place.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "placeId")
-    Place place;
+    private Place place;
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
-    User user;
+    private User user;
 
-    String content;
-    Integer rewarded;
+    private String content;
+    private Integer rewarded;
+
+    @OneToMany(mappedBy = "review")
+    private Set<Photo> photos = new HashSet<>();
 
     @Builder
-    public Review(String reviewId, Place place, String content, User user, Integer rewarded) {
+    public Review(String reviewId, Place place, User user, String content, Integer rewarded, Set<Photo> photos) {
         this.reviewId = reviewId;
         this.place = place;
-        this.content = content;
         this.user = user;
+        this.content = content;
         this.rewarded = rewarded;
+        this.photos = photos;
     }
 }
