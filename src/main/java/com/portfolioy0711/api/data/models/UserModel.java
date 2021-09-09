@@ -2,6 +2,8 @@ package com.portfolioy0711.api.data.models;
 
 import com.portfolioy0711.api.data.entities.*;
 import com.portfolioy0711.api.data.models.user.UserCmdRepository;
+import com.portfolioy0711.api.typings.response.QUserRewardDto;
+import com.portfolioy0711.api.typings.response.UserRewardReponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,11 +35,16 @@ public class UserModel {
                 .from(qUser)
                 .where(qUser.userId.eq(userId)).fetchOne();
     }
-    public List<Reward> findUserRewards(String userId) {
-        QReward qReward = QReward.reward;
+    public List<UserRewardReponse> findUserRewards(String userId) {
+        QUser user = QUser.user;
+        QReview review = QReview.review;
+        QReward reward = QReward.reward;
+
         return query
-                .select(qReward)
-                .from(qReward)
+                .select(new QUserRewardDto(reward.rewardId, reward.reviewId, reward.operation, reward.pointDelta, reward.reason))
+                .innerJoin(user.reviewList,review)
+                .innerJoin(user.rewardList,reward)
+                .from(user)
                 .fetch();
     }
 

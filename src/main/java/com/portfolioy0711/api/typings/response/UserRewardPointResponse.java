@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class UserRewardPointDto {
+public class UserRewardPointResponse {
     @ApiModelProperty(value = "리워드 포인트", required = true)
     private Integer rewardPoint;
 }

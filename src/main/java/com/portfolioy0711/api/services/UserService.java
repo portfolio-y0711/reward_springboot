@@ -1,14 +1,12 @@
 package com.portfolioy0711.api.services;
 
 import com.portfolioy0711.api.data.EventDatabase;
-import com.portfolioy0711.api.data.entities.Reward;
+import com.portfolioy0711.api.data.models.RewardModel;
 import com.portfolioy0711.api.data.models.UserModel;
-import com.portfolioy0711.api.data.models.user.UserCmdRepository;
-import com.portfolioy0711.api.typings.response.UserRewardPointDto;
+import com.portfolioy0711.api.typings.response.UserRewardReponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,15 +19,13 @@ public class UserService {
         this.eventDatabase = eventDatabase;
     }
 
-    public UserRewardPointDto fetchUserRewardPoint (String userId) {
+    public Integer fetchUserRewardPoint (String userId) {
         UserModel userModel = eventDatabase.getUserModel();
-        userModel.findUserRewardPoint(userId);
-        return new UserRewardPointDto(0);
+        return userModel.findUserRewardPoint(userId);
     }
 
-    public List<Reward> fetchUserRewards (String userId) {
-        UserModel userModel = eventDatabase.getUserModel();
-        userModel.findUserRewards(userId);
-        return new ArrayList<Reward>();
+    public List<UserRewardReponse> fetchUserRewards (String userId) {
+        RewardModel rewardModel = eventDatabase.getRewardModel();
+        return rewardModel.findRewardsByUserId(userId);
     }
 }

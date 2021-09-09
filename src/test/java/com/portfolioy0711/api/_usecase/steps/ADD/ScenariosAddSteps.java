@@ -132,7 +132,7 @@ public class ScenariosAddSteps {
 
         Reward rewardRecord =  rewardModel.findLatestUserReviewRewardByReviewId(userId, reviewId);
 
-        assertEquals(rewardModel.findRewards(), "");
+        assertEquals(rewardRecord, "");
 //        Reward rewardRecord =  rewardModel.findRewards().get(0);
 //        ObjectMapper mapper = new ObjectMapper();
 //        String rewardStr = mapper.writeValueAsString(rewardRecord);

@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@ToString(of = { "userId", "name", "rewardPoint" })
 public class User {
     @Id
     @Column(name = "userId")

@@ -14,16 +14,8 @@ import javax.persistence.EntityManager;
 public class ApiApplication {
     private static ApplicationContext applicationContext;
 
-//    public static void displayAllBeans() {
-//        String[] allBeanNames = applicationContext.getBeanDefinitionNames();
-//        for(String beanName : allBeanNames) {
-//            System.out.println(beanName);
-//        }
-//    }
-
     public static void main(String[] args) {
         applicationContext = SpringApplication.run(ApiApplication.class, args);
-//        displayAllBeans();
     }
 
     @Bean

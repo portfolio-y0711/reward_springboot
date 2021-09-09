@@ -23,24 +23,3 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = {ApiApplication.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CucumberTest{}
 
-//    @Autowired
-//    protected AddReviewActionHandler addReviewActionHandler;
-//
-//    @Autowired
-//    protected EventDatabase eventDatabase;
-//    protected PlaceModel placeModel;
-//
-//    @Before
-//    public void setUp() {
-//        placeModel = eventDatabase.getPlaceModel();
-//        Place result = placeModel.save(
-//                Place.builder()
-//                        .bonusPoint(1)
-//                        .country("호주")
-//                        .name("멜번")
-//                        .placeId("2e4baf1c-5acb-4efb-a1af-eddada31b00f")
-//                        .build()
-//        );
-//        System.out.println(result);
-//    }
-

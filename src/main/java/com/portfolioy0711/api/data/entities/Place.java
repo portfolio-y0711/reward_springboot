@@ -1,8 +1,6 @@
 package com.portfolioy0711.api.data.entities;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@ToString(of = { "placeId", "name", "country", "bonusPoint" })
 public class Place {
     @Id
     @Column(name = "placeId")
