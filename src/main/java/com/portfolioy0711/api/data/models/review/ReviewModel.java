@@ -1,15 +1,16 @@
 package com.portfolioy0711.api.data.models.review;
 
-import com.portfolioy0711.api.data.entities.QPlace;
-import com.portfolioy0711.api.data.entities.QReview;
-import com.portfolioy0711.api.data.entities.QUser;
-import com.portfolioy0711.api.data.entities.Review;
-import com.querydsl.core.Tuple;
+import com.portfolioy0711.api.data.entities.*;
+import com.portfolioy0711.api.typings.response.ReviewResponse;
+import com.querydsl.core.group.GroupBy;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
+import static com.querydsl.core.group.GroupBy.groupBy;
 
 @Component
 public class ReviewModel {
@@ -37,67 +38,95 @@ public class ReviewModel {
                 .fetch();
     }
 
-    public List<Review> findReviewsByUserId(String userId) {
-        QReview review = QReview.review;
-        QUser user = QUser.user;
-
-//        List<Review> result =
-        return query.select(review)
-                .from(review)
-                .join(user)
-                .on(review.user().userId.eq(user.userId))
-                .where(review.user().userId.eq(userId))
-//                .join(review.user(), user)
-//                .where(review.user().userId.eq(userId))
-                .fetch();
-//        return result;
-    }
-
-    public List<Review> findReviewsByPlaceId(String placeId) {
-        QReview review = QReview.review;
-        QPlace place = QPlace.place;
-
-//        List<Review> result =
-           return query.select(review)
-                .from(review)
-//                .join(place)
-//                .on(review.place().placeId.eq(place.placeId))
+//    public List<Review> findReviewsByPlaceId(String placeId) {
+//        QReview review = QReview.review;
+//        QPlace place = QPlace.place;
+//
+//           return query.select(review)
+//                .from(review)
+////                .join(place)
+////                .on(review.place().placeId.eq(place.placeId))
+////                .where(review.place().placeId.eq(placeId))
+//                .join(review.place(), place)
 //                .where(review.place().placeId.eq(placeId))
-                .join(review.place(), place)
-                .where(review.place().placeId.eq(placeId))
-                .fetch();
-//        return result;
-    }
+//                .fetch();
+//    }
 
-    public List<Tuple> findReviewsByUserIdAndPlaceId(String userId, String placeId) {
+    public List<ReviewResponse> findReviewsByUserIdAndPlaceId(String userId, String placeId) {
         QReview review = QReview.review;
         QPlace place = QPlace.place;
         QUser user = QUser.user;
+        QPhoto photo = QPhoto.photo;
 
-//        List<Tuple> result =
-        return query.select()
+        return query.select(review, place, user)
+            .from(review)
+            .join(review.place(), place)
+            .join(review.user(), user)
+            .join(review.photos, photo)
+            .transform(
+                    groupBy(review.reviewId)
+                    .list(Projections.constructor(
+                            ReviewResponse.class,
+                            review.reviewId,
+                            place.placeId,
+                            user.userId,
+                            review.content,
+                            review.rewarded,
+                            GroupBy.set(photo.photoId)
+                    ))
+            );
+    }
+
+    public List<ReviewResponse> findReviewsByUserId(String userId) {
+        QReview review = QReview.review;
+        QPlace place = QPlace.place;
+        QUser user = QUser.user;
+        QPhoto photo = QPhoto.photo;
+
+        return query.select(review, place, user)
                 .from(review)
+                .where(review.user().userId.eq(userId))
                 .join(review.place(), place)
                 .join(review.user(), user)
-//                .where(review.place().placeId.eq(placeId), review.user().userId.eq(userId))
-                .fetch();
-//       return result;
+                .join(review.photos, photo)
+                .transform(
+                        groupBy(review.reviewId)
+                                .list(Projections.constructor(
+                                        ReviewResponse.class,
+                                        review.reviewId,
+                                        place.placeId,
+                                        user.userId,
+                                        review.content,
+                                        review.rewarded,
+                                        GroupBy.set(photo.photoId)
+                                ))
+                );
     }
 
-    public void findReviewsByReviewId(String reviewId) {
-//        QReview review = QReview.review;
-//        query.from(review)
-//                .where()
-//                .select(new QReviewResponse(review.reviewId, review.place().placeId, review.user().userId, review.content, review.rewarded, review))
-//        reviewId, placeId, userId, content, rewarded, attachedPhotoIds
-//
-//        this.reviewId = reviewId;
-//        this.placeId = placeId;
-//        this.userId = userId;
-//        this.content = content;
-//        this.rewarded = rewarded;
-//        this.attachedPhotoIds = attachedPhotoIds;
-//                new ReviewResponse();
+    public ReviewResponse findReviewsByReviewId(String reviewId) {
+        QReview review = QReview.review;
+        QPlace place = QPlace.place;
+        QUser user = QUser.user;
+        QPhoto photo = QPhoto.photo;
+
+        return query.select(review, place, user)
+                .from(review)
+                .where(review.reviewId.eq(reviewId))
+                .join(review.place(), place)
+                .join(review.user(), user)
+                .join(review.photos, photo)
+                .transform(
+                        groupBy(review.reviewId)
+                                .list(Projections.constructor(
+                                        ReviewResponse.class,
+                                        review.reviewId,
+                                        place.placeId,
+                                        user.userId,
+                                        review.content,
+                                        review.rewarded,
+                                        GroupBy.set(photo.photoId)
+                                ))
+                ).get(0);
     }
 
     public Review save(Review review) {

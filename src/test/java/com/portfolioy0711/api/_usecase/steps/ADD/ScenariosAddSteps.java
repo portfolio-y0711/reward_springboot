@@ -7,6 +7,7 @@ import com.portfolioy0711.api.data.entities.Place;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.portfolioy0711.api.data.entities.Review;
 import com.portfolioy0711.api.data.entities.User;
 import com.portfolioy0711.api.data.models.place.PlaceModel;
 import com.portfolioy0711.api.data.models.review.ReviewModel;
@@ -15,6 +16,7 @@ import com.portfolioy0711.api.data.models.user.UserModel;
 import com.portfolioy0711.api.services.review.actions.AddReviewActionHandler;
 import com.portfolioy0711.api.typings.dto.ReviewEventDto;
 import com.portfolioy0711.api.typings.response.UserRewardReponse;
+import com.querydsl.core.Tuple;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -150,10 +152,8 @@ public class ScenariosAddSteps {
         String userId = review.get("userId");
         int rewarded = Integer.parseInt(review.get("rewarded"));
 
-//        Review review = reviewModel.findReviewByReviewId(reviewId);
 
-
-        assertEquals(rewarded, "");
+        assertEquals(reviewModel.findReviewsByUserIdAndPlaceId(userId, placeId), "");
     }
 }
 

@@ -32,12 +32,6 @@ public class AddReviewActionHandlerTest {
     @Autowired
     private EventDatabase eventDatabase;
 
-//    private UserModel userModel;
-//    private PlaceModel placeModel;
-//    private ReviewModel reviewModel;
-//    private RewardModel rewardModel;
-//    private PhotoModel photoModel;
-
     @Before
     public void setUp() {
     }
@@ -47,9 +41,6 @@ public class AddReviewActionHandlerTest {
     public void addReviewActionHandlerTest() {
         UserModel userModel = eventDatabase.getUserModel();
         PlaceModel placeModel = eventDatabase.getPlaceModel();
-//        ReviewModel reviewModel = eventDatabase.getReviewModel();
-//        RewardModel rewardModel = eventDatabase.getRewardModel();
-//        PhotoModel photoModel = eventDatabase.getPhotoModel();
 
         userModel.save(
                 User.builder()
@@ -86,55 +77,5 @@ public class AddReviewActionHandlerTest {
 
 //        assertEquals();
 
-
-
-//        addReviewActionHandler.handleEvent(eventInfo);
-//
-//        ReviewModel reviewModel = eventDatabase.getReviewModel();
-//        boolean isDuplicate = reviewModel.checkRecordExistsByReviewId(eventInfo.getReviewId());
-//        Integer reviewCount = reviewModel.findReviewCountsByPlaceId(eventInfo.getPlaceId());
-//
-//        boolean isRewardable = (reviewCount == 0);
-//
-//        if (isRewardable) {
-//            placeModel = eventDatabase.getPlaceModel();
-//            Place place = placeModel.findPlaceByPlaceId(eventInfo.getPlaceId());
-//
-//            Integer bonusPoint = place.getBonusPoint();
-//
-//            Integer contentPoint = eventInfo.getContent().length()  > 1 ? 1 : 0;
-//            Integer photosPoint = eventInfo.getAttachedPhotoIds().length > 1 ? 1 : 0;
-//            Integer addPoint = contentPoint + photosPoint + bonusPoint;
-//
-//            userModel = eventDatabase.getUserModel();
-//            User user = userModel.findUserByUserId(eventInfo.getUserId());
-//
-//            Integer currPoint = user.getRewardPoint();
-//
-//            String addOperation = "ADD";
-//            String addReason = "NEW";
-//
-//            RewardModel rewardModel = eventDatabase.getRewardModel();
-//            rewardModel.save(
-//                Reward
-//                    .builder()
-//                    .operation(addOperation)
-//                    .pointDelta(currPoint + addPoint)
-//                    .reason(addReason)
-//                    .rewardId(eventInfo.getReviewId())
-//                    .build()
-//            );
-//
-//            reviewModel.save(
-//                Review
-//                    .builder()
-//                    .reviewId(eventInfo.getReviewId())
-//                    .content(eventInfo.getContent())
-//                    .rewarded(BooleanType.TRUE.getValue())
-//                    .user(user)
-//                    .place(place)
-//                    .build()
-//            );
-//        }
     }
 }

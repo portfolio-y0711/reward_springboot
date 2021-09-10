@@ -1,8 +1,10 @@
 package com.portfolioy0711.api.typings.response;
 
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public class ApiErrorResponse {
     private HttpStatus status;
@@ -58,6 +60,7 @@ public class ApiErrorResponse {
             return apiErrorResponse;
         }
     }
+
 }
 
 

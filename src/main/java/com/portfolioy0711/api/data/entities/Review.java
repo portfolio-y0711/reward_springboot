@@ -1,5 +1,8 @@
 package com.portfolioy0711.api.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 import javax.persistence.*;
 import java.util.HashSet;

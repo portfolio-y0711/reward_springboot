@@ -17,7 +17,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 @Service
-
 public class EventService {
 
     @Autowired

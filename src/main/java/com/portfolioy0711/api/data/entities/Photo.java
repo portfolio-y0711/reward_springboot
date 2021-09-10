@@ -1,8 +1,6 @@
 package com.portfolioy0711.api.data.entities;
 
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -10,6 +8,8 @@ import java.util.Objects;
 @Entity
 @NoArgsConstructor
 @ToString(of = { "photoId" } )
+@Getter
+@Setter
 public class Photo {
     @Id
     private String photoId;
@@ -37,3 +37,4 @@ public class Photo {
         return Objects.hash(photoId);
     }
 }
+

@@ -35,6 +35,11 @@ public class AddReviewActionHandler implements ActionHandler {
         ReviewModel reviewModel = eventDatabase.getReviewModel();
 
         boolean isDuplicate = reviewModel.checkRecordExistsByReviewId(eventInfo.getReviewId());
+
+//        if (isDuplicate) {
+//            throw new Exception();
+//        }
+
         logger.error("\t‣" + "\tduplicate record exists by that reviewId");
         Integer reviewCount = reviewModel.findReviewCountsByPlaceId(eventInfo.getPlaceId());
 

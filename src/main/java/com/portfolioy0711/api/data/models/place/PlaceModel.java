@@ -26,11 +26,11 @@ public class PlaceModel {
     }
 
     public Place findPlaceByPlaceId(String placeId) {
-        QPlace qPlace = QPlace.place;
+        QPlace place = QPlace.place;
         return query
-                .select(qPlace)
-                .from(qPlace)
-                .where(qPlace.placeId.eq(placeId))
+                .select(place)
+                .from(place)
+                .where(place.placeId.eq(placeId))
                 .fetchOne();
     }
 
