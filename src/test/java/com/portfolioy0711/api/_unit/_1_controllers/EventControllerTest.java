@@ -1,6 +1,6 @@
 package com.portfolioy0711.api._unit._1_controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.portfolioy0711.api.controllers.EventController;
+import com.portfolioy0711.api.controllers.event.EventController;
 import com.portfolioy0711.api.services.EventService;
 import com.portfolioy0711.api.typings.dto.ReviewEventDto;
 import org.json.simple.parser.ParseException;

@@ -8,6 +8,7 @@ import com.portfolioy0711.api.data.models.reward.RewardModel;
 import com.portfolioy0711.api.data.models.user.UserModel;
 import com.portfolioy0711.api.typings.ActionHandler;
 import com.portfolioy0711.api.typings.dto.ReviewEventDto;
+import com.portfolioy0711.api.typings.exception.DuplicateRecordException;
 import com.portfolioy0711.api.typings.vo.BooleanType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +37,11 @@ public class AddReviewActionHandler implements ActionHandler {
 
         boolean isDuplicate = reviewModel.checkRecordExistsByReviewId(eventInfo.getReviewId());
 
-//        if (isDuplicate) {
-//            throw new Exception();
-//        }
+        if (isDuplicate) {
+            logger.error("\t‣" + "\tprocess terminated: due to context error");
+            throw new DuplicateRecordException("duplicate record exist by that reviewId");
+        }
 
-        logger.error("\t‣" + "\tduplicate record exists by that reviewId");
         Integer reviewCount = reviewModel.findReviewCountsByPlaceId(eventInfo.getPlaceId());
 
         boolean isRewardable = (reviewCount == 0);

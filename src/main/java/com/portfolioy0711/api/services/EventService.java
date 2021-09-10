@@ -36,9 +36,7 @@ public class EventService {
             switch(type) {
                 case "REVIEW":
                     ReviewEventDto reviewEvent = (ReviewEventDto) objectMapper.readValue(eventStr, new TypeReference<ReviewEventDto>(){});
-                    System.out.println("!!!!");
                     ReviewEventActionRouter reviewEventHandler = context.getBean(ReviewEventActionRouter.class);
-                    System.out.println(reviewEventHandler);
                     reviewEventHandler.route(reviewEvent);
                     break;
                 case "BlarBlar":
