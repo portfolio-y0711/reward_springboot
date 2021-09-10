@@ -1,8 +1,7 @@
-package com.portfolioy0711.api.data.models;
+package com.portfolioy0711.api.data.models.photo;
 
 import com.portfolioy0711.api.data.entities.Photo;
 import com.portfolioy0711.api.data.entities.QPhoto;
-import com.portfolioy0711.api.data.models.photo.PhotoCmdRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

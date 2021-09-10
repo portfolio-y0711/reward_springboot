@@ -2,8 +2,8 @@ package com.portfolioy0711.api._i11._1_databases;
 
 import com.portfolioy0711.api.data.entities.Reward;
 import com.portfolioy0711.api.data.entities.User;
-import com.portfolioy0711.api.data.models.RewardModel;
-import com.portfolioy0711.api.data.models.UserModel;
+import com.portfolioy0711.api.data.models.reward.RewardModel;
+import com.portfolioy0711.api.data.models.user.UserModel;
 import com.portfolioy0711.api.typings.response.UserRewardReponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.Test;

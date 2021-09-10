@@ -7,12 +7,11 @@ import com.portfolioy0711.api.data.entities.Place;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.portfolioy0711.api.data.entities.Review;
 import com.portfolioy0711.api.data.entities.User;
-import com.portfolioy0711.api.data.models.PlaceModel;
-import com.portfolioy0711.api.data.models.ReviewModel;
-import com.portfolioy0711.api.data.models.RewardModel;
-import com.portfolioy0711.api.data.models.UserModel;
+import com.portfolioy0711.api.data.models.place.PlaceModel;
+import com.portfolioy0711.api.data.models.review.ReviewModel;
+import com.portfolioy0711.api.data.models.reward.RewardModel;
+import com.portfolioy0711.api.data.models.user.UserModel;
 import com.portfolioy0711.api.services.review.actions.AddReviewActionHandler;
 import com.portfolioy0711.api.typings.dto.ReviewEventDto;
 import com.portfolioy0711.api.typings.response.UserRewardReponse;

@@ -1,10 +1,11 @@
 package com.portfolioy0711.api._unit._2_services;
 
 import com.portfolioy0711.api.data.EventDatabase;
-import com.portfolioy0711.api.data.models.PlaceModel;
-import com.portfolioy0711.api.data.models.ReviewModel;
-import com.portfolioy0711.api.data.models.RewardModel;
-import com.portfolioy0711.api.data.models.UserModel;
+import com.portfolioy0711.api.data.models.photo.PhotoModel;
+import com.portfolioy0711.api.data.models.place.PlaceModel;
+import com.portfolioy0711.api.data.models.review.ReviewModel;
+import com.portfolioy0711.api.data.models.reward.RewardModel;
+import com.portfolioy0711.api.data.models.user.UserModel;
 import com.portfolioy0711.api.services.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,7 @@ public class UserServiceTest {
     private PlaceModel placeModel;
     private ReviewModel reviewModel;
     private RewardModel rewardModel;
+    private PhotoModel photoModel;
     private UserService userService;
 
     @Before
@@ -29,7 +31,7 @@ public class UserServiceTest {
         placeModel = Mockito.mock(PlaceModel.class);
         reviewModel = Mockito.mock(ReviewModel.class);
         rewardModel = Mockito.mock(RewardModel.class);
-        eventDatabase = new EventDatabase(userModel, placeModel, reviewModel, rewardModel);
+        eventDatabase = new EventDatabase(userModel, placeModel, reviewModel, rewardModel, photoModel);
         userService = new UserService(eventDatabase);
     }
 

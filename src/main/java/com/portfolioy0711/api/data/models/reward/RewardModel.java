@@ -1,4 +1,4 @@
-package com.portfolioy0711.api.data.models;
+package com.portfolioy0711.api.data.models.reward;
 
 import com.portfolioy0711.api.data.entities.QReward;
 import com.portfolioy0711.api.data.entities.QUser;

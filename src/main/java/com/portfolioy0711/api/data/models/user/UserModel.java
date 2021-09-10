@@ -1,4 +1,4 @@
-package com.portfolioy0711.api.data.models;
+package com.portfolioy0711.api.data.models.user;
 
 import com.portfolioy0711.api.data.entities.*;
 import com.portfolioy0711.api.data.models.user.UserCmdRepository;

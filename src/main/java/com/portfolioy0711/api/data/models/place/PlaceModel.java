@@ -1,4 +1,4 @@
-package com.portfolioy0711.api.data.models;
+package com.portfolioy0711.api.data.models.place;
 
 import com.portfolioy0711.api.data.entities.Place;
 import com.portfolioy0711.api.data.entities.QPlace;

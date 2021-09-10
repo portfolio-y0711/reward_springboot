@@ -1,13 +1,11 @@
 package com.portfolioy0711.api.services.review.actions;
 
-import com.portfolioy0711.api.data.entities.Place;
-import com.portfolioy0711.api.data.entities.Review;
-import com.portfolioy0711.api.data.entities.Reward;
-import com.portfolioy0711.api.data.entities.User;
-import com.portfolioy0711.api.data.models.PlaceModel;
-import com.portfolioy0711.api.data.models.ReviewModel;
-import com.portfolioy0711.api.data.models.RewardModel;
-import com.portfolioy0711.api.data.models.UserModel;
+import com.portfolioy0711.api.data.entities.*;
+import com.portfolioy0711.api.data.models.photo.PhotoModel;
+import com.portfolioy0711.api.data.models.place.PlaceModel;
+import com.portfolioy0711.api.data.models.review.ReviewModel;
+import com.portfolioy0711.api.data.models.reward.RewardModel;
+import com.portfolioy0711.api.data.models.user.UserModel;
 import com.portfolioy0711.api.typings.ActionHandler;
 import com.portfolioy0711.api.typings.dto.ReviewEventDto;
 import com.portfolioy0711.api.typings.vo.BooleanType;
@@ -18,7 +16,7 @@ import org.springframework.stereotype.Component;
 import com.portfolioy0711.api.data.EventDatabase;
 
 import javax.transaction.Transactional;
-import java.util.UUID;
+import java.util.*;
 
 
 @Component
@@ -86,10 +84,7 @@ public class AddReviewActionHandler implements ActionHandler {
                             .build()
             );
 
-            logger.info(String.format("\t[✔︎] REWARDS %s record created", addOperation));
-            logger.info("\t[✔︎] USERS total reward point updated");
             logger.info("\t[✔︎] REVIEWS review has been created");
-
 
             place.getReviews().add(review);
             placeModel.save(place);
@@ -110,8 +105,20 @@ public class AddReviewActionHandler implements ActionHandler {
                     .build()
             );
 
+            logger.info(String.format("\t[✔︎] REWARDS %s record created", addOperation));
+            PhotoModel photoModel = eventDatabase.getPhotoModel();
+
+            String[] photoIds = eventInfo.getAttachedPhotoIds();
+            Arrays.stream(photoIds)
+                    .map(photoId -> new Photo(photoId, review))
+                    .forEach(photoModel::save);
+
+            logger.info(String.format("\t[✔︎] %s PHOTOS created & attached", photoIds.length));
 
             userModel.updateRewardPoint(eventInfo.getUserId(), currPoint + addPoint);
+            logger.info("\t[✔︎] USERS total reward point updated");
+            logger.info("\ttransaction finished -------------------------------------END");
         }
+        logger.info("===================================================================================END");
     }
 }

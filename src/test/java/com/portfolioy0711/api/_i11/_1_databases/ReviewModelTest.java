@@ -1,16 +1,17 @@
 package com.portfolioy0711.api._i11._1_databases;
 
 import com.portfolioy0711.api.data.entities.*;
-import com.portfolioy0711.api.data.models.*;
+import com.portfolioy0711.api.data.models.photo.PhotoModel;
+import com.portfolioy0711.api.data.models.place.PlaceModel;
+import com.portfolioy0711.api.data.models.review.ReviewModel;
+import com.portfolioy0711.api.data.models.reward.RewardModel;
+import com.portfolioy0711.api.data.models.user.UserModel;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @SpringBootTest
 public class ReviewModelTest {

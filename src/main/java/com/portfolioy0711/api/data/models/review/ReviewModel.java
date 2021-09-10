@@ -1,10 +1,9 @@
-package com.portfolioy0711.api.data.models;
+package com.portfolioy0711.api.data.models.review;
 
 import com.portfolioy0711.api.data.entities.QPlace;
 import com.portfolioy0711.api.data.entities.QReview;
 import com.portfolioy0711.api.data.entities.QUser;
 import com.portfolioy0711.api.data.entities.Review;
-import com.portfolioy0711.api.data.models.review.ReviewCmdRepository;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,8 @@ public class ReviewModel {
         QReview review = QReview.review;
         QUser user = QUser.user;
 
-        List<Review> result = query.select(review)
+//        List<Review> result =
+        return query.select(review)
                 .from(review)
                 .join(user)
                 .on(review.user().userId.eq(user.userId))
@@ -50,14 +50,15 @@ public class ReviewModel {
 //                .join(review.user(), user)
 //                .where(review.user().userId.eq(userId))
                 .fetch();
-        return result;
+//        return result;
     }
 
     public List<Review> findReviewsByPlaceId(String placeId) {
         QReview review = QReview.review;
         QPlace place = QPlace.place;
 
-        List<Review> result = query.select(review)
+//        List<Review> result =
+           return query.select(review)
                 .from(review)
 //                .join(place)
 //                .on(review.place().placeId.eq(place.placeId))
@@ -65,7 +66,7 @@ public class ReviewModel {
                 .join(review.place(), place)
                 .where(review.place().placeId.eq(placeId))
                 .fetch();
-        return result;
+//        return result;
     }
 
     public List<Tuple> findReviewsByUserIdAndPlaceId(String userId, String placeId) {
@@ -73,13 +74,14 @@ public class ReviewModel {
         QPlace place = QPlace.place;
         QUser user = QUser.user;
 
-        List<Tuple> result = query.select()
+//        List<Tuple> result =
+        return query.select()
                 .from(review)
                 .join(review.place(), place)
                 .join(review.user(), user)
 //                .where(review.place().placeId.eq(placeId), review.user().userId.eq(userId))
                 .fetch();
-       return result;
+//       return result;
     }
 
     public void findReviewsByReviewId(String reviewId) {
