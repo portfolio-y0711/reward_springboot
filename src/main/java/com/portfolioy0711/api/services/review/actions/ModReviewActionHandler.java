@@ -9,13 +9,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ModReviewActionHandler implements ActionHandler {
+    private EventDatabase eventDatabase;
 
-    @Autowired
-    EventDatabase eventDatabase;
+    public ModReviewActionHandler(EventDatabase eventDatabase) {
+        this.eventDatabase = eventDatabase;
+    }
 
     @Override
     public void handleEvent(Object event) {
         ReviewEventDto eventInfo = (ReviewEventDto) event;
         UserModel userModel = eventDatabase.getUserModel();
     }
+
 }

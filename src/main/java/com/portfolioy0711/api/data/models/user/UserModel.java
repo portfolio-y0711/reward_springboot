@@ -7,6 +7,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 
@@ -47,13 +48,20 @@ public class UserModel {
                 .fetch();
     }
 
+    @Transactional
     public long updateRewardPoint(String userId, Integer rewardPoint) {
        QUser user = QUser.user;
-       return query
-               .update(user)
-               .where(user.userId.eq(userId))
-               .set(user.rewardPoint, rewardPoint)
-               .execute();
+       long result = 0L;
+       try {
+           result = query
+                   .update(user)
+                   .where(user.userId.eq(userId))
+                   .set(user.rewardPoint, rewardPoint)
+                   .execute();
+       } catch (Exception e) {
+           System.out.println(e);
+       }
+       return result;
     }
 
     public User findUserByUserId(String userId) {

@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Data
 @NoArgsConstructor
-public class ReviewEventDto {
+public class ReviewEventDto extends EventDto {
     @NotEmpty
     @ApiModelProperty(dataType = "EventType", example = "REVIEW")
     String type;

@@ -169,7 +169,7 @@ CREATE INDEX IF NOT EXISTS index_rewards_reason ON REWARDS(reason);
 
 <br/>
 
-🎯 &nbsp; **_Open Closed Principle_** : 이벤트 타입, 액션에 따른 전략 객체 생성을 통한 이벤트 처리 알고리즘 변경 / 라우팅 테이블 주입 및 라우팅 처리 (Event Router / Action Router)로 유연한 설계 구현
+🎯 &nbsp; **_Open Closed Principle_** : 이벤트 타입, 액션에 따른 전략 객체 생성을 통한 이벤트 처리 알고리즘 변경 / 이벤트 라우터 (Event Router / Action Router) 주입으로 유연한 설계 구현
 
 <br/>
 
@@ -178,57 +178,38 @@ CREATE INDEX IF NOT EXISTS index_rewards_reason ON REWARDS(reason);
 _이벤트 핸들링 서비스_: [`src/main/java/com/portfolioy0711/api/services`](https://github.com/portfolio-y0711/reward_springboot/tree/main/src/main/java/com/portfolioy0711/api/services)
 
 ```ts
-// 이벤트 타입으로 분기 ("REVIEW")
-@Service
-public class EventService {
+// 이벤트 타입("REVIEW") 액션 타입("ADD", "MOD", "DELETE")
+// 이벤트 타입("BLAR_BLAR") 액션 타입("A", "B", "C")
 
-  @Autowired
-  private ApplicationContext context;
+@RestController
+@Api(tags = "Event")
+public class EventController {
+    private EventService eventService;
 
+    public EventController(EventService eventService, EventDatabase eventDatabase) {
+        this.eventService = eventService;
 
-  public void route (String eventStr) throws ParseException, JsonProcessingException {
-      JSONParser jsonParser = new JSONParser();
-      JSONObject jsonObject = (JSONObject) jsonParser.parse(eventStr);
-      ObjectMapper objectMapper = new ObjectMapper();
+        EventRouter reviewEventRouter = new ReviewEventActionRouter()
+            .addRoute("ADD", new AddReviewActionHandler(eventDatabase))
+            .addRoute("MOD", new ModReviewActionHandler(eventDatabase))
+            .addRoute("DELETE", new DelReviewActionHandler(eventDatabase));
 
-      if (jsonObject.containsKey("type") && jsonObject.containsKey("action")) {
-          String type = (String) jsonObject.get("type");
-          switch(type) {
-              case "REVIEW":
-                  ReviewEventDto reviewEvent = (ReviewEventDto) objectMapper.readValue(eventStr, new TypeReference<ReviewEventDto>(){});
-                  ReviewEventHandler reviewEventHandler = context.getBean(ReviewEventHandler.class);
-                  reviewEventHandler.route(reviewEvent);
-                  break;
-              case "BlarBlar":
-                  BlarBlarEventDto blarblarEvent = (BlarBlarEventDto) objectMapper.readValue(eventStr, new TypeReference<BlarBlarEventDto>(){});
-                  BlarBlarEventHandler blarblarEventHandler = context.getBean(BlarBlarEventHandler.class);
-                  blarblarEventHandler.route(blarblarEvent);
-                  break;
-          }
-      }
-  }
-}
+        EventRouter blarblarEventRouter = new BlarBlarEventActionRouter()
+            .addRoute("A", new A_ActionHandler(eventDatabase))
+            .addRoute("B", new B_ActionHandler(eventDatabase))
+            .addRoute("C", new C_ActionHandler(eventDatabase));
 
+        this.eventService
+                .addEventRouter("REVIEW", reviewEventRouter)
+                .addEventRouter("BLAR_BLAR", blarblarEventRouter);
+    }
 
-// 액션 타입으로 분기 ("ADD", "MOD", "DELETE")
-@Component
-public class ReviewEventHandler implements EventHandler {
-  @Autowired
-  private ApplicationContext context;
-
-  private Map<String, ActionHandler> routes = new HashMap<>();
-
-  public ReviewEventHandler(ApplicationContext context) {
-      this.context = context;
-      this.routes.put("ADD", (ActionHandler) context.getBean(AddReviewActionHandler.class));
-      this.routes.put("MOD", (ActionHandler) context.getBean(ModReviewActionHandler.class));
-      this.routes.put("DEL", (ActionHandler) context.getBean(DelReviewActionHandler.class));
-  }
-
-  public void route (Object event) {
-      String action = ((ReviewEventDto) event).getAction();
-      routes.get(action).handleEvent(event);
-  }
+    @RequestMapping(value = "/events", method = POST)
+    public void postEvent(@RequestBody Object body) throws ParseException, JsonProcessingException {
+        EventMapper eventMapper = new EventMapper(body);
+        eventMapper.validate("type", EventTypeEnum.getEventTypes());
+        this.eventService.route(body);
+    }
 }
 
 ```

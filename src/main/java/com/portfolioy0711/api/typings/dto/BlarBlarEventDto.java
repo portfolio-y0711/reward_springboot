@@ -1,17 +1,14 @@
 package com.portfolioy0711.api.typings.dto;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Data
-@AllArgsConstructor
-public class BlarBlarEventDto {
-
+@NoArgsConstructor
+public class BlarBlarEventDto extends EventDto{
     @NotEmpty
     @ApiModelProperty(dataType = "EventType", example = "REVIEW")
     String type;
@@ -24,8 +21,10 @@ public class BlarBlarEventDto {
     @ApiModelProperty(position = 1, dataType = "String", example = "ADD")
     String blarblarInfo;
 
-    public static class EventDto {
-        String type;
-        String action;
+    @Builder
+    public BlarBlarEventDto(@NotEmpty String type, @NotEmpty String action, @NotEmpty String blarblarInfo) {
+        this.type = type;
+        this.action = action;
+        this.blarblarInfo = blarblarInfo;
     }
 }

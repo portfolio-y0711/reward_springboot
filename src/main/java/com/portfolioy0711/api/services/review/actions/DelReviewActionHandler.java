@@ -11,11 +11,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DelReviewActionHandler implements ActionHandler {
-
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private EventDatabase eventDatabase;
 
-    @Autowired
-    EventDatabase eventDatabase;
+    public DelReviewActionHandler(EventDatabase eventDatabase) {
+        this.eventDatabase = eventDatabase;
+    }
 
     @Override
     public void handleEvent(Object event) {
@@ -23,4 +24,5 @@ public class DelReviewActionHandler implements ActionHandler {
         logger.info(String.format("[EVENT: ReviewEventActionHandler (%s)] started process ========================START", eventInfo.getAction()));
         UserModel userModel = eventDatabase.getUserModel();
     }
+
 }
