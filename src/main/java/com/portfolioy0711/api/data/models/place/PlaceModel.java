@@ -11,11 +11,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class PlaceModel {
-    @Autowired
-    PlaceCmdRepository placeCmdRepository;
-
-    @Autowired
-    private JPAQueryFactory query;
+    private final PlaceCmdRepository placeCmdRepository;
+    private final JPAQueryFactory query;
 
     public Integer findBonusPoint(String placeId) {
         return 0;

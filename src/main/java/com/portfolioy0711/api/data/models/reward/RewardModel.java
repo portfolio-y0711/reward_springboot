@@ -6,19 +6,16 @@ import com.portfolioy0711.api.data.entities.Reward;
 import com.portfolioy0711.api.typings.response.QUserRewardReponse;
 import com.portfolioy0711.api.typings.response.UserRewardReponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class RewardModel {
-
-    @Autowired
-    RewardCmdRepository rewardCmdRepository;
-
-    @Autowired
-    private JPAQueryFactory query;
+    private final RewardCmdRepository rewardCmdRepository;
+    private final JPAQueryFactory query;
 
     public Reward save(Reward reward) {
         return rewardCmdRepository.save(reward);

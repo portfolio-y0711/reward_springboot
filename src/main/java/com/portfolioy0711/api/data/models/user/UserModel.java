@@ -4,6 +4,7 @@ import com.portfolioy0711.api.data.entities.*;
 import com.portfolioy0711.api.typings.response.QUserRewardReponse;
 import com.portfolioy0711.api.typings.response.UserRewardReponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,17 +13,10 @@ import java.util.List;
 
 
 @Component
+@RequiredArgsConstructor
 public class UserModel {
-    @Autowired
-    UserCmdRepository userCmdRepository;
-
-    @Autowired
-    private JPAQueryFactory query;
-
-    public UserModel(UserCmdRepository userCmdRepository, JPAQueryFactory query) {
-        this.userCmdRepository = userCmdRepository;
-        this.query = query;
-    }
+    private final UserCmdRepository userCmdRepository;
+    private final JPAQueryFactory query;
 
     public User save(User user) {
         return userCmdRepository.save(user);

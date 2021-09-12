@@ -5,6 +5,7 @@ import com.portfolioy0711.api.typings.response.ReviewResponse;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,12 +15,10 @@ import java.util.Set;
 import static com.querydsl.core.group.GroupBy.groupBy;
 
 @Component
+@RequiredArgsConstructor
 public class ReviewModel {
-    @Autowired
-    ReviewCmdRepository userCmdRepository;
-
-    @Autowired
-    private JPAQueryFactory query;
+    private final ReviewCmdRepository userCmdRepository;
+    private final JPAQueryFactory query;
 
     public boolean checkRecordExistsByReviewId(String reviewId) {
         QReview review = QReview.review;

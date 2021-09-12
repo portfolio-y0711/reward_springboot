@@ -13,11 +13,8 @@ import java.util.List;
 @Component
 public class PhotoModel {
 
-    @Autowired
-    PhotoCmdRepository photoCmdRepository;
-
-    @Autowired
-    private JPAQueryFactory query;
+    private final PhotoCmdRepository photoCmdRepository;
+    private final JPAQueryFactory query;
 
     public Photo save(Photo photo) {
         return photoCmdRepository.save(photo);
