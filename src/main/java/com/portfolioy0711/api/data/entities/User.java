@@ -18,15 +18,19 @@ import java.util.Objects;
 public class User extends Base {
     @Id
     @Column(name = "userId")
-    String userId;
-    String name;
-    Integer rewardPoint;
+    private String userId;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private Integer rewardPoint;
 
     @OneToMany(mappedBy = "user")
-    List<Review> reviewList = new ArrayList<Review>();
+    private final List<Review> reviewList = new ArrayList<Review>();
 
     @OneToMany(mappedBy = "user")
-    List<Reward> rewardList = new ArrayList<>();
+    private final List<Reward> rewardList = new ArrayList<>();
 
     @Builder
     public User(String userId, String name, Integer rewardPoint) {

@@ -1,8 +1,5 @@
 package com.portfolioy0711.api.data.entities;
 
-import com.fasterxml.jackson.annotation.JsonRawValue;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 import javax.persistence.*;
 import java.util.HashSet;
@@ -18,14 +15,17 @@ public class Review extends Base {
     private String reviewId;
 
     @ManyToOne(targetEntity = Place.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "placeId")
+    @JoinColumn(name = "placeId", nullable = false)
     private Place place;
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 
+    @Column(nullable = false)
     private String content;
+
+    @Column(nullable = false)
     private Integer rewarded;
 
     @OneToMany(mappedBy = "review")

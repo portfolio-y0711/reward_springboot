@@ -15,7 +15,7 @@ public class Photo extends Base {
     private String photoId;
 
     @ManyToOne(targetEntity = Review.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "reviewId")
+    @JoinColumn(name = "reviewId", nullable = true)
     private Review review;
 
     @Builder

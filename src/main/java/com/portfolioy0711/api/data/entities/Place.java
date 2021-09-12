@@ -18,13 +18,19 @@ import java.util.Objects;
 public class Place extends Base {
     @Id
     @Column(name = "placeId")
-    String placeId;
-    String name;
-    String country;
-    Integer bonusPoint;
+    private String placeId;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String country;
+
+    @Column(nullable = false)
+    private Integer bonusPoint;
 
     @OneToMany(mappedBy = "place")
-    List<Review> reviews = new ArrayList<Review>();
+    private final List<Review> reviews = new ArrayList<Review>();
 
     @Builder
     public Place(String placeId, String name, String country, Integer bonusPoint) {

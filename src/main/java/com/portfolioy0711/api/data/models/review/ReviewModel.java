@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
 
@@ -25,7 +26,7 @@ public class ReviewModel {
         long result = query.from(review)
                 .where(review.reviewId.eq(reviewId))
                 .fetchCount();
-       return (result > 0) ? true : false;
+       return result > 0;
     }
 
     public Integer findReviewCountsByPlaceId(String placeId) {
@@ -36,6 +37,16 @@ public class ReviewModel {
         QReview review = QReview.review;
         return query.selectFrom(review)
                 .fetch();
+    }
+
+    public void updateReview(String reviewId, String content, Set<Photo> photos) {
+        QReview review = QReview.review;
+        query.update(review)
+            .set(review.content, content)
+            .set(review.photos, photos)
+            .where(review.reviewId.eq(reviewId))
+            .execute();
+
     }
 
 //    public List<Review> findReviewsByPlaceId(String placeId) {
@@ -101,20 +112,6 @@ public class ReviewModel {
                                         GroupBy.set(photo.photoId)
                                 ))
                 );
-    }
-
-    public void findLatestRewardByUserIdAndReviewId(String userId, String reviewId) {
-        QUser user = QUser.user;
-        QReward reward = QReward.reward;
-
-        System.out.println(
-        query.select(reward, user)
-                .from(reward)
-                .join(reward.user(), user)
-                .where(reward.user().userId.eq(userId))
-                .where(reward.reviewId.eq(reviewId))
-        );
-
     }
 
     public ReviewResponse findReviewsByReviewId(String reviewId) {

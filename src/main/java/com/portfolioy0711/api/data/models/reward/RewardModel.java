@@ -45,4 +45,20 @@ public class RewardModel {
                 .where(reward.user().userId.eq(userId))
                 .fetch();
     }
+
+    public UserRewardReponse findLatestRewardByUserIdAndReviewId(String userId, String reviewId) {
+        QUser user = QUser.user;
+        QReward reward = QReward.reward;
+
+        return query.select(new QUserRewardReponse(reward.rewardId, reward.user().userId, reward.reviewId, reward.operation, reward.pointDelta, reward.reason, reward.created_at))
+                .from(reward)
+                .join(reward.user(), user)
+                .where(reward.user().userId.eq(userId))
+                .where(reward.reviewId.eq(reviewId))
+                .where(reward.operation.eq("ADD"))
+                .orderBy(reward.created_at.desc())
+                .limit(1)
+                .fetchOne();
+
+    }
 }
