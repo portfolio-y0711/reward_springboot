@@ -8,16 +8,11 @@ import com.portfolioy0711.api.data.models.place.PlaceModel;
 import com.portfolioy0711.api.data.models.review.ReviewModel;
 import com.portfolioy0711.api.data.models.reward.RewardModel;
 import com.portfolioy0711.api.data.models.user.UserModel;
-import com.portfolioy0711.api.services.review.actions.AddReviewActionHandler;
 import com.portfolioy0711.api.services.review.actions.ModReviewActionHandler;
 import com.portfolioy0711.api.typings.dto.ReviewEventDto;
-import com.portfolioy0711.api.typings.exception.DuplicateRecordException;
 import com.portfolioy0711.api.typings.exception.NoRecordException;
 import com.portfolioy0711.api.typings.response.ReviewResponse;
 import com.portfolioy0711.api.typings.response.UserRewardReponse;
-import com.portfolioy0711.api.typings.vo.BooleanType;
-import com.sun.org.apache.xpath.internal.operations.Mod;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 public class ModReviewActionHandlerTest {
@@ -90,7 +84,6 @@ public class ModReviewActionHandlerTest {
                 .build());
 
         UUID uuid = UUID.randomUUID();
-        System.out.println(uuid);
 
         rewardModel.save(
             Reward
@@ -111,7 +104,7 @@ public class ModReviewActionHandlerTest {
                 .content("좋아요")
                 .attachedPhotoIds(new String[] {
                     "e4d1a64e-a531-46de-88d0-ff0ed70c0bb8",
-                    "afb0cef2-851d-4a50-bb07-9cc15cbdc332"
+//                    "afb0cef2-851d-4a50-bb07-9cc15cbdc332"
                 })
                 .placeId("2e4baf1c-5acb-4efb-a1af-eddada31b00f")
                 .reviewId("240a0658-dc5f-4878-9831-ebb7b26687772")
@@ -119,10 +112,11 @@ public class ModReviewActionHandlerTest {
                 .build();
 
 //        modReviewActionHandler.handleEvent(eventInfo);
+//
 
         logger.info(String.format("[EVENT: ReviewEventActionHandler (%s)] started process ========================START", eventInfo.getAction()));
         reviewModel = eventDatabase.getReviewModel();
-        ReviewResponse found = reviewModel.findReviewsByReviewId(eventInfo.getReviewId());
+        ReviewResponse found = reviewModel.findReviewInfoByReviewId(eventInfo.getReviewId());
 
         if (found == null) {
             logger.error("\t‣" + "\tno record exists by that reviewId");
@@ -143,7 +137,6 @@ public class ModReviewActionHandlerTest {
             logger.info(String.format("\t\t reason: %s review", latestRewardRecord.getReason()));
             logger.info(String.format("\t\t operation: %s %s", latestRewardRecord.getOperation(), latestRewardRecord.getPointDelta()));
 
-
             Place place = placeModel.findPlaceByPlaceId(eventInfo.getPlaceId());
             Integer bonusPoint = place.getBonusPoint();
 
@@ -158,97 +151,89 @@ public class ModReviewActionHandlerTest {
             logger.info(String.format("\t\t= total point : %s", totalPoint));
 
             int diff = totalPoint - latestRewardRecord.getPointDelta();
+            logger.info(String.format("\t‣" +"\tpoint diff: %s", diff));
 
-            if (diff != 0) {
-                logger.info(String.format("\t‣" +"\tpoint diff: %s", totalPoint));
+            if (diff == 0) {
+                logger.info("\ttransaction started ------------------------------------BEGIN");
+            } else {
                 String subtract_operation = "SUB";
                 String subtract_reason = "MOD";
 
-                String add_operation = "SUB";
+                String add_operation = "ADD";
                 String add_reason = "MOD";
 
                 User user = userModel.findUserByUserId(eventInfo.getUserId());
                 int currPoint = user.getRewardPoint();
 
-                logger.info("\ttransaction started ------------------------------------BEGIN");
-
                 logger.info(String.format("\t‣" +"\tuser's current rewardPoint: %s", currPoint));
                 logger.info(String.format("\t‣" +"\tuser's next rewardPoint: %s", currPoint + diff));
 
+                logger.info("\ttransaction started ------------------------------------BEGIN");
+
                 rewardModel.save(
                     Reward.builder()
-                            .build()
+                        .rewardId(UUID.randomUUID().toString())
+                        .user(_user)
+                        .reason(subtract_reason)
+                        .operation(subtract_operation)
+                        .pointDelta(currPoint)
+                        .build()
                 );
 
                 rewardModel.save(
                     Reward.builder()
+                        .rewardId(UUID.randomUUID().toString())
+                        .user(_user)
+                        .reason(add_reason)
+                        .operation(add_operation)
+                        .pointDelta(totalPoint)
                         .build()
                 );
+
+                logger.info(String.format("\t[✔︎] REWARDS %s record created", subtract_operation));
+                logger.info(String.format("\t[✔︎] REWARDS %s record created", add_operation));
 
                 userModel.updateRewardPoint(
                     eventInfo.getUserId(),
          currPoint + diff
                 );
-
-//                eventInfo.getAttachedPhotoIds()
-//                photoModel.findPhotoByPhotoId();
-
-//                reviewModel.updateReview(
-//                    eventInfo.getReviewId(),
-//                    eventInfo.getContent(),
-//                );
-
+                logger.info("\t[✔︎] USERS total rewardPoint updated");
             }
 
-//            Review review = reviewModel.save(
-//                    Review
-//                            .builder()
-//                            .reviewId(eventInfo.getReviewId())
-//                            .content(eventInfo.getContent())
-//                            .rewarded(BooleanType.TRUE.getValue())
-//                            .user(user)
-//                            .place(place)
-//                            .build()
-//            );
-//
-//            logger.info("\t[✔︎] REVIEWS review has been created");
-//
-//            place.getReviews().add(review);
-//            placeModel.save(place);
-//
-//            UUID uuid = UUID.randomUUID();
-//
-//            RewardModel rewardModel = eventDatabase.getRewardModel();
-//
-//            rewardModel.save(
-//                    Reward
-//                            .builder()
-//                            .rewardId(uuid.toString())
-//                            .operation(addOperation)
-//                            .pointDelta(currPoint + addPoint)
-//                            .reason(addReason)
-//                            .user(user)
-//                            .reviewId(eventInfo.getReviewId())
-//                            .build()
-//            );
-//
-//            logger.info(String.format("\t[✔︎] REWARDS %s record created", addOperation));
-//            PhotoModel photoModel = eventDatabase.getPhotoModel();
-//
-//            String[] photoIds = eventInfo.getAttachedPhotoIds();
-//            Arrays.stream(photoIds)
-//                    .map(photoId -> new Photo(photoId, review))
-//                    .forEach(photoModel::save);
-//
-//            logger.info(String.format("\t[✔︎] %s PHOTOS created & attached", photoIds.length));
-//            System.out.println(eventInfo.getUserId());
-//
-//            System.out.println(currPoint + addPoint);
-//
-//            userModel.updateRewardPoint(eventInfo.getUserId(), currPoint + addPoint);
-//            logger.info("\t[✔︎] USERS total reward point updated");
-//            logger.info("\ttransaction finished -------------------------------------END");
+            ReviewResponse currentReview = reviewModel.findReviewInfoByReviewId(eventInfo.getReviewId());
+
+            ArrayList<String> currentPhotoIds = (ArrayList<String>) currentReview.getPhotoIds().stream().collect(Collectors.toList());
+            ArrayList<String> newPhotoIds = (ArrayList<String>) Arrays.stream(eventInfo.getAttachedPhotoIds()).collect(Collectors.toList());
+
+            String[] add_photo_ids = Arrays.stream(eventInfo.getAttachedPhotoIds())
+                    .filter(photoId -> !currentPhotoIds.contains(photoId))
+                    .toArray(String[]::new);
+
+            String[] delete_photo_ids = currentPhotoIds.stream()
+                    .filter(currentPhotoId -> !newPhotoIds.contains(currentPhotoId))
+                    .toArray(String[]::new);
+
+            if (add_photo_ids.length > 0 || delete_photo_ids.length > 0) {
+                Review review = reviewModel.findReviewByReviewId(eventInfo.getReviewId());
+
+                Arrays.stream(add_photo_ids)
+                        .map(photoId -> new Photo(photoId, review))
+                        .forEach(photoModel::save);
+
+                Arrays.stream(delete_photo_ids)
+                        .forEach(photoModel::remove);
+
+                logger.info("\t[✔︎] PHOTOS has been updated");
+            }
+
+            reviewModel.updateReview(
+                    eventInfo.getReviewId(),
+                    eventInfo.getContent()
+            );
+
+            logger.info("\t[✔︎] REVIEWS review has been updated");
+            logger.info("\ttransaction finished -------------------------------------END");
         }
-//        logger.info("===================================================================================END");
+        logger.info("===================================================================================END");
     }
 }

@@ -34,4 +34,8 @@ public class PhotoModel {
                .where(photo.photoId.eq(photoId))
                .fetchOne();
     }
+
+    public void remove(String photoId) {
+        photoCmdRepository.deleteById(photoId);
+    }
 }

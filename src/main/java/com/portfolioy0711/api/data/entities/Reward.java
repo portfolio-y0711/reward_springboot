@@ -13,6 +13,8 @@ import javax.persistence.*;
 public class Reward extends Base {
     @Id
     private String rewardId;
+
+    @Column(nullable = false)
     private String reviewId;
 
     @JsonIgnore

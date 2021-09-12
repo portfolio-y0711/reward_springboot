@@ -45,6 +45,7 @@ public class UserModel {
 
     @Transactional
     public long updateRewardPoint(String userId, Integer rewardPoint) {
+        System.out.println(rewardPoint);
        final QUser user = QUser.user;
        long result = 0L;
        try {
@@ -56,6 +57,7 @@ public class UserModel {
        } catch (Exception e) {
            System.out.println(e);
        }
+        System.out.println(result);
        return result;
     }
 
