@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ModReviewActionHandler implements ActionHandler {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private EventDatabase eventDatabase;
+    private final EventDatabase eventDatabase;
 
     public ModReviewActionHandler(EventDatabase eventDatabase) {
         this.eventDatabase = eventDatabase;

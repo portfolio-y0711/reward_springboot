@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class A_ActionHandler implements ActionHandler {
-    private EventDatabase eventDatabase;
+    private final EventDatabase eventDatabase;
 
     public A_ActionHandler(EventDatabase eventDatabase) {
         this.eventDatabase = eventDatabase;

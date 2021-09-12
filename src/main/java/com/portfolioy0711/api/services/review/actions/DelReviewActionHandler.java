@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DelReviewActionHandler implements ActionHandler {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private EventDatabase eventDatabase;
+    private final EventDatabase eventDatabase;
 
     public DelReviewActionHandler(EventDatabase eventDatabase) {
         this.eventDatabase = eventDatabase;

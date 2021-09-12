@@ -206,8 +206,8 @@ public class EventController {
 
     @RequestMapping(value = "/events", method = POST)
     public void postEvent(@RequestBody Object body) throws ParseException, JsonProcessingException {
-        EventMapper eventMapper = new EventMapper(body);
-        eventMapper.validate("type", EventTypeEnum.getEventTypes());
+        EventMapper eventValidator = new EventMapper(body);
+        eventValidator.validate("type", EventTypeEnum.getEventTypes());
         this.eventService.route(body);
     }
 }

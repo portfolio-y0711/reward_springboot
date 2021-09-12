@@ -11,18 +11,14 @@ import com.portfolioy0711.api.services.review.ReviewEventActionRouter;
 import com.portfolioy0711.api.services.review.actions.AddReviewActionHandler;
 import com.portfolioy0711.api.services.review.actions.DelReviewActionHandler;
 import com.portfolioy0711.api.services.review.actions.ModReviewActionHandler;
-import com.portfolioy0711.api.typings.ActionHandler;
 import com.portfolioy0711.api.typings.EventRouter;
 import com.portfolioy0711.api.typings.vo.event.EventTypeEnum;
+import com.portfolioy0711.api.util.EventValidator;
 import io.swagger.annotations.*;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.AbstractMap;
-
-import static java.util.AbstractMap.SimpleEntry;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -52,8 +48,8 @@ public class EventController {
 
     @RequestMapping(value = "/events", method = POST)
     public void postEvent(@RequestBody Object body) throws ParseException, JsonProcessingException {
-        EventMapper eventMapper = new EventMapper(body);
-        eventMapper.validate("type", EventTypeEnum.getEventTypes());
+        EventValidator eventValidator = new EventValidator(body);
+        eventValidator.validate("type", EventTypeEnum.getEventTypes());
         this.eventService.route(body);
     }
 }

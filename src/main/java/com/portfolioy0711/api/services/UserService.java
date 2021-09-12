@@ -11,9 +11,7 @@ import java.util.List;
 
 @Service
 public class UserService {
-
-    @Autowired
-    private EventDatabase eventDatabase;
+    private final EventDatabase eventDatabase;
 
     public UserService(EventDatabase eventDatabase) {
         this.eventDatabase = eventDatabase;

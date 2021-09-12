@@ -1,7 +1,7 @@
 package com.portfolioy0711.api.services.blarblar;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.portfolioy0711.api.controllers.event.EventMapper;
+import com.portfolioy0711.api.util.EventValidator;
 import com.portfolioy0711.api.typings.ActionHandler;
 import com.portfolioy0711.api.typings.EventRouter;
 import com.portfolioy0711.api.typings.dto.BlarBlarEventDto;
@@ -16,8 +16,7 @@ import java.util.Map;
 @Component
 @NoArgsConstructor
 public class BlarBlarEventActionRouter implements EventRouter {
-
-    Map<String, ActionHandler> routes = new HashMap<>();
+    private final Map<String, ActionHandler> routes = new HashMap<>();
 
     @Override
     public EventRouter addRoute(String path, ActionHandler handler) {
@@ -27,10 +26,10 @@ public class BlarBlarEventActionRouter implements EventRouter {
 
     @Override
     public void route (Object body) throws JsonProcessingException, ParseException {
-        EventMapper eventMapper = new EventMapper(body);
-        eventMapper.validate("action", BlarBlarActionEnum.getActionTypes());
+        EventValidator eventValidator = new EventValidator(body);
+        eventValidator.validate("action", BlarBlarActionEnum.getActionTypes());
 
-        BlarBlarEventDto eventInfo = (BlarBlarEventDto) eventMapper.transform(BlarBlarEventDto.class);
+        BlarBlarEventDto eventInfo = eventValidator.transform(BlarBlarEventDto.class);
         String action = eventInfo.getAction();
         routes.get(action).handleEvent(eventInfo);
     }

@@ -8,11 +8,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ReviewService {
+    private final EventDatabase eventDatabase;
 
-    @Autowired
-    private EventDatabase eventDatabase;
-
-    ReviewService(EventDatabase eventDatabase) {
+    public ReviewService(EventDatabase eventDatabase) {
         this.eventDatabase = eventDatabase;
     }
 

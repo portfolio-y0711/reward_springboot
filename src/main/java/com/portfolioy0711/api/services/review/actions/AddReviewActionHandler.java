@@ -20,7 +20,7 @@ import java.util.UUID;
 
 public class AddReviewActionHandler implements ActionHandler {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private EventDatabase eventDatabase;
+    private final EventDatabase eventDatabase;
 
     public AddReviewActionHandler(EventDatabase eventDatabase) {
         this.eventDatabase = eventDatabase;
@@ -118,11 +118,8 @@ public class AddReviewActionHandler implements ActionHandler {
                     .forEach(photoModel::save);
 
             logger.info(String.format("\t[✔︎] %s PHOTOS created & attached", photoIds.length));
-            System.out.println(eventInfo.getUserId());
-
-            System.out.println(currPoint + addPoint);
-
             userModel.updateRewardPoint(eventInfo.getUserId(), currPoint + addPoint);
+
             logger.info("\t[✔︎] USERS total reward point updated");
             logger.info("\ttransaction finished -------------------------------------END");
         }

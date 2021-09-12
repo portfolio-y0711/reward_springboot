@@ -1,21 +1,20 @@
-package com.portfolioy0711.api.controllers.event;
+package com.portfolioy0711.api.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.portfolioy0711.api.typings.dto.EventDto;
 import com.portfolioy0711.api.typings.exception.InvalidRequestException;
-import com.portfolioy0711.api.typings.vo.event.EventTypeEnum;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.util.Arrays;
 
-public class EventMapper {
+public class EventValidator {
     private JSONObject jsonObject;
     private Object body;
 
-    public EventMapper(Object body) throws JsonProcessingException, ParseException {
+    public EventValidator(Object body) throws JsonProcessingException, ParseException {
         ObjectMapper mapper = new ObjectMapper();
         String eventStr = mapper.writeValueAsString(body);
         JSONParser jsonParser = new JSONParser();
@@ -24,11 +23,11 @@ public class EventMapper {
         this.jsonObject = jsonObject;
     }
 
-    public <T extends Object> T getValueAsType(String key) {
+    public <T> T getValueAsType(String key) {
        return (T) this.jsonObject.get(key);
     }
 
-    public EventMapper validate(String key, String[] values) throws JsonProcessingException, ParseException {
+    public EventValidator validate(String key, String[] values) throws JsonProcessingException, ParseException {
         if (!jsonObject.containsKey(key)) {
             throw new InvalidRequestException("type must be one of the following values");
         } else {
