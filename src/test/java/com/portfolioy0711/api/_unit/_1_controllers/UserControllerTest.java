@@ -1,6 +1,6 @@
 package com.portfolioy0711.api._unit._1_controllers;
 
-import com.portfolioy0711.api.controllers.UserController;
+import com.portfolioy0711.api.controllers.user.UserController;
 import com.portfolioy0711.api.services.UserService;
 import org.junit.Before;
 import org.junit.Test;

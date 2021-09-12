@@ -33,7 +33,6 @@ public class ReviewEventActionRouter implements EventRouter {
     public void route (Object body) throws JsonProcessingException, ParseException {
         EventMapper eventMapper = new EventMapper(body);
         eventMapper.validate("action", ReviewActionEnum.getActionTypes());
-
         ReviewEventDto eventInfo = (ReviewEventDto) eventMapper.transform(ReviewEventDto.class);
         String action = eventInfo.getAction();
         routes.get(action).handleEvent(eventInfo);

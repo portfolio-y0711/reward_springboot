@@ -28,7 +28,6 @@ import static org.mockito.Mockito.verify;
 public class EventServiceTest {
 
     private EventService eventService;
-    private AddReviewActionHandler addReviewActionHandler;
     private ReviewEventActionRouter reviewEventActionRouter;
 
     @Before
@@ -38,7 +37,6 @@ public class EventServiceTest {
 
     @Test
     public void eventTypeRouteTest() throws JsonProcessingException, ParseException {
-        addReviewActionHandler = Mockito.mock(AddReviewActionHandler.class);
         reviewEventActionRouter = Mockito.mock(ReviewEventActionRouter.class);
         eventService.addEventRouter("REVIEW", reviewEventActionRouter);
 

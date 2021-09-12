@@ -20,9 +20,9 @@ public class DelReviewActionHandler implements ActionHandler {
 
     @Override
     public void handleEvent(Object event) {
-        ReviewEventDto eventInfo = (ReviewEventDto) event;
-        logger.info(String.format("[EVENT: ReviewEventActionHandler (%s)] started process ========================START", eventInfo.getAction()));
-        UserModel userModel = eventDatabase.getUserModel();
+//        ReviewEventDto eventInfo = (ReviewEventDto) event;
+//        logger.info(String.format("[EVENT: ReviewEventActionHandler (%s)] started process ========================START", eventInfo.getAction()));
+//        UserModel userModel = eventDatabase.getUserModel();
     }
 
 }

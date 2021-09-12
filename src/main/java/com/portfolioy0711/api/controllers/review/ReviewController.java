@@ -1,4 +1,4 @@
-package com.portfolioy0711.api.controllers;
+package com.portfolioy0711.api.controllers.review;
 
 import com.portfolioy0711.api.services.ReviewService;
 import com.portfolioy0711.api.typings.response.ReviewResponse;

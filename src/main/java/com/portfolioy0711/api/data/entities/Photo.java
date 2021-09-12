@@ -10,7 +10,7 @@ import java.util.Objects;
 @ToString(of = { "photoId" } )
 @Getter
 @Setter
-public class Photo {
+public class Photo extends Base {
     @Id
     private String photoId;
 

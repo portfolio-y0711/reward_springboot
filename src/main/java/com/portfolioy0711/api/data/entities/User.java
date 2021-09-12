@@ -15,7 +15,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @ToString(of = { "userId", "name", "rewardPoint" })
-public class User {
+public class User extends Base {
     @Id
     @Column(name = "userId")
     String userId;

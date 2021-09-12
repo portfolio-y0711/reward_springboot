@@ -3,42 +3,28 @@ package com.portfolioy0711.api._i11._2_services.actions;
 
 import com.portfolioy0711.api.data.EventDatabase;
 import com.portfolioy0711.api.data.entities.Place;
-import com.portfolioy0711.api.data.entities.Review;
-import com.portfolioy0711.api.data.entities.Reward;
 import com.portfolioy0711.api.data.entities.User;
-import com.portfolioy0711.api.data.models.photo.PhotoModel;
 import com.portfolioy0711.api.data.models.place.PlaceModel;
-import com.portfolioy0711.api.data.models.review.ReviewModel;
-import com.portfolioy0711.api.data.models.reward.RewardModel;
 import com.portfolioy0711.api.data.models.user.UserModel;
 import com.portfolioy0711.api.services.review.actions.AddReviewActionHandler;
 import com.portfolioy0711.api.typings.dto.ReviewEventDto;
-import com.portfolioy0711.api.typings.vo.BooleanType;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 @SpringBootTest
 public class AddReviewActionHandlerTest {
 
     @Autowired
-    private AddReviewActionHandler addReviewActionHandler;
-
-    @Autowired
     private EventDatabase eventDatabase;
-
-    @Before
-    public void setUp() {
-    }
 
     @Test
     @Transactional
     public void addReviewActionHandlerTest() {
+        AddReviewActionHandler addReviewActionHandler = new AddReviewActionHandler(eventDatabase);
+
         UserModel userModel = eventDatabase.getUserModel();
         PlaceModel placeModel = eventDatabase.getPlaceModel();
 
@@ -74,8 +60,6 @@ public class AddReviewActionHandlerTest {
                 .build();
 
         addReviewActionHandler.handleEvent(eventInfo);
-
-//        assertEquals();
 
     }
 }

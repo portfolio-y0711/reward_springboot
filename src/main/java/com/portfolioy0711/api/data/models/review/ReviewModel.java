@@ -103,30 +103,50 @@ public class ReviewModel {
                 );
     }
 
+    public void findLatestRewardByUserIdAndReviewId(String userId, String reviewId) {
+        QUser user = QUser.user;
+        QReward reward = QReward.reward;
+
+        System.out.println(
+        query.select(reward, user)
+                .from(reward)
+                .join(reward.user(), user)
+                .where(reward.user().userId.eq(userId))
+                .where(reward.reviewId.eq(reviewId))
+        );
+
+    }
+
     public ReviewResponse findReviewsByReviewId(String reviewId) {
         QReview review = QReview.review;
         QPlace place = QPlace.place;
         QUser user = QUser.user;
         QPhoto photo = QPhoto.photo;
 
-        return query.select(review, place, user)
-                .from(review)
-                .where(review.reviewId.eq(reviewId))
-                .join(review.place(), place)
-                .join(review.user(), user)
-                .join(review.photos, photo)
-                .transform(
-                        groupBy(review.reviewId)
-                                .list(Projections.constructor(
-                                        ReviewResponse.class,
-                                        review.reviewId,
-                                        place.placeId,
-                                        user.userId,
-                                        review.content,
-                                        review.rewarded,
-                                        GroupBy.set(photo.photoId)
-                                ))
-                ).get(0);
+        ReviewResponse found;
+        try {
+            found = query.select(review, place, user)
+                    .from(review)
+                    .where(review.reviewId.eq(reviewId))
+                    .join(review.place(), place)
+                    .join(review.user(), user)
+                    .join(review.photos, photo)
+                    .transform(
+                            groupBy(review.reviewId)
+                                    .list(Projections.constructor(
+                                            ReviewResponse.class,
+                                            review.reviewId,
+                                            place.placeId,
+                                            user.userId,
+                                            review.content,
+                                            review.rewarded,
+                                            GroupBy.set(photo.photoId)
+                                    ))
+                    ).get(0);
+        } catch (IndexOutOfBoundsException ex) {
+           return null;
+        }
+        return found;
     }
 
     public Review save(Review review) {

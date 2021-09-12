@@ -11,6 +11,7 @@ import com.portfolioy0711.api.services.review.ReviewEventActionRouter;
 import com.portfolioy0711.api.services.review.actions.AddReviewActionHandler;
 import com.portfolioy0711.api.services.review.actions.DelReviewActionHandler;
 import com.portfolioy0711.api.services.review.actions.ModReviewActionHandler;
+import com.portfolioy0711.api.typings.ActionHandler;
 import com.portfolioy0711.api.typings.EventRouter;
 import com.portfolioy0711.api.typings.vo.event.EventTypeEnum;
 import io.swagger.annotations.*;
@@ -18,6 +19,10 @@ import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.AbstractMap;
+
+import static java.util.AbstractMap.SimpleEntry;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -42,6 +47,7 @@ public class EventController {
         this.eventService
                 .addEventRouter("REVIEW", reviewEventRouter)
                 .addEventRouter("BLAR_BLAR", blarblarEventRouter);
+
     }
 
     @RequestMapping(value = "/events", method = POST)

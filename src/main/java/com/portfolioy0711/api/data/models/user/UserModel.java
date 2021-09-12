@@ -37,11 +37,12 @@ public class UserModel {
     }
     public List<UserRewardReponse> findUserRewards(String userId) {
         QUser user = QUser.user;
+        QBase base = QBase.base;
         QReview review = QReview.review;
         QReward reward = QReward.reward;
 
         return query
-                .select(new QUserRewardReponse(reward.rewardId, reward.user().userId, reward.reviewId, reward.operation, reward.pointDelta, reward.reason))
+                .select(new QUserRewardReponse(reward.rewardId, reward.user().userId, reward.reviewId, reward.operation, reward.pointDelta, reward.reason, base.created_at))
                 .innerJoin(user.reviewList,review)
                 .innerJoin(user.rewardList,reward)
                 .from(user)

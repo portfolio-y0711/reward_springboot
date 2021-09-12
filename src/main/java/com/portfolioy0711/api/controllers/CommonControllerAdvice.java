@@ -1,4 +1,4 @@
-package com.portfolioy0711.api.config;
+package com.portfolioy0711.api.controllers;
 
 import com.portfolioy0711.api.typings.exception.EntityNotFoundException;
 import com.portfolioy0711.api.typings.response.ErrorMessage;

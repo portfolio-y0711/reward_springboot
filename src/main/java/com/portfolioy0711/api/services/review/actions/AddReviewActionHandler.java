@@ -15,7 +15,8 @@ import org.slf4j.LoggerFactory;
 import com.portfolioy0711.api.data.EventDatabase;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.Arrays;
+import java.util.UUID;
 
 public class AddReviewActionHandler implements ActionHandler {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

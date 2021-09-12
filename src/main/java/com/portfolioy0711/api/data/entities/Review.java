@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @ToString(of = { "reviewId", "content", "rewarded" } )
-public class Review {
+public class Review extends Base {
     @Id
     private String reviewId;
 

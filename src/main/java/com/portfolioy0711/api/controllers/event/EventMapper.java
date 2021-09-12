@@ -15,10 +15,6 @@ public class EventMapper {
     private JSONObject jsonObject;
     private Object body;
 
-    public String getEventType() {
-       return (String) this.jsonObject.get("type");
-    }
-
     public EventMapper(Object body) throws JsonProcessingException, ParseException {
         ObjectMapper mapper = new ObjectMapper();
         String eventStr = mapper.writeValueAsString(body);
@@ -39,7 +35,7 @@ public class EventMapper {
             String type = (String) jsonObject.get(key);
             Boolean isContains = Arrays.stream(values).anyMatch(v -> v.equals(type));
             if (!isContains)  {
-                throw new InvalidRequestException(String.format("type must be one of %s but received \"%s\"", Arrays.toString(EventTypeEnum.values()), type));
+                throw new InvalidRequestException(String.format("type must be one of %s but received \"%s\"", Arrays.toString(values), type));
             }
         }
         return this;
@@ -48,6 +44,5 @@ public class EventMapper {
     public <T extends EventDto> T transform(Class<T> type) {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.convertValue(body, type);
-//        return type.cast(body);
     }
 }

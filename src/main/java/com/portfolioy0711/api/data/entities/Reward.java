@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @ToString(of = { "rewardId", "reviewId", "operation", "pointDelta", "reason" })
 @NoArgsConstructor
-public class Reward {
+public class Reward extends Base {
     @Id
     String rewardId;
     String reviewId;
