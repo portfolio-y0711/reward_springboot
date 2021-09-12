@@ -5,24 +5,18 @@ import com.portfolioy0711.api.data.models.review.ReviewModel;
 import com.portfolioy0711.api.data.models.reward.RewardModel;
 import com.portfolioy0711.api.data.models.user.UserModel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @Getter
+@RequiredArgsConstructor
 public class EventDatabase {
-    private UserModel userModel;
-    private PlaceModel placeModel;
-    private ReviewModel reviewModel;
-    private RewardModel rewardModel;
-    private PhotoModel photoModel;
-
-    public EventDatabase(UserModel userModel, PlaceModel placeModel, ReviewModel reviewModel, RewardModel rewardModel, PhotoModel photoModel) {
-        this.userModel = userModel;
-        this.placeModel = placeModel;
-        this.reviewModel = reviewModel;
-        this.rewardModel = rewardModel;
-        this.photoModel = photoModel;
-    }
+    private final UserModel userModel;
+    private final PlaceModel placeModel;
+    private final ReviewModel reviewModel;
+    private final RewardModel rewardModel;
+    private final PhotoModel photoModel;
 
     @Override
     public String toString() {

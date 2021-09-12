@@ -23,29 +23,26 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class DataSeeer implements CommandLineRunner {
-    @Autowired
-    Environment env;
-    @Autowired
-    UserCmdRepository userRepository;
-    @Autowired
-    PlaceCmdRepository placeRepository;
+    private final Environment env;
+    private final UserCmdRepository userRepository;
+    private final PlaceCmdRepository placeRepository;
 
     public void seedUsers() throws IOException {
-        File resource = new ClassPathResource("/seeds/users.json").getFile();
-        String json = new String(Files.readAllBytes(resource.toPath()));
+        final File resource = new ClassPathResource("/seeds/users.json").getFile();
+        final String json = new String(Files.readAllBytes(resource.toPath()));
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<User> users = objectMapper.readValue(json, new TypeReference<List<User>>(){});
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final List<User> users = objectMapper.readValue(json, new TypeReference<List<User>>(){});
 
         users.forEach(user -> userRepository.save(user));
     }
 
     public void seedPlaces() throws IOException {
-        File resource = new ClassPathResource("/seeds/places.json").getFile();
-        String json = new String(Files.readAllBytes(resource.toPath()));
+        final File resource = new ClassPathResource("/seeds/places.json").getFile();
+        final String json = new String(Files.readAllBytes(resource.toPath()));
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<Place> places = objectMapper.readValue(json, new TypeReference<List<Place>>(){});
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final List<Place> places = objectMapper.readValue(json, new TypeReference<List<Place>>(){});
 
         places.forEach(place -> placeRepository.save(place));
     }

@@ -22,8 +22,8 @@ public class RewardModel {
     }
 
     public UserRewardReponse findLatestUserReviewRewardByReviewId(String userId, String reviewId) {
-        QUser user = QUser.user;
-        QReward reward = QReward.reward;
+        final QUser user = QUser.user;
+        final QReward reward = QReward.reward;
         return query.select(new QUserRewardReponse(reward.rewardId, reward.user().userId, reward.reviewId, reward.operation, reward.pointDelta, reward.reason, reward.created_at))
                 .from(reward)
                 .join(reward.user(), user)
@@ -33,8 +33,8 @@ public class RewardModel {
     }
 
     public List<UserRewardReponse> findRewardsByUserId(String userId) {
-        QReward reward = QReward.reward;
-        QUser user = QUser.user;
+        final QReward reward = QReward.reward;
+        final QUser user = QUser.user;
 
         return query.select(new QUserRewardReponse(reward.rewardId, reward.user().userId, reward.reviewId, reward.operation, reward.pointDelta, reward.reason, reward.created_at))
                 .from(reward)
@@ -44,8 +44,8 @@ public class RewardModel {
     }
 
     public UserRewardReponse findLatestRewardByUserIdAndReviewId(String userId, String reviewId) {
-        QUser user = QUser.user;
-        QReward reward = QReward.reward;
+        final QUser user = QUser.user;
+        final QReward reward = QReward.reward;
 
         return query.select(new QUserRewardReponse(reward.rewardId, reward.user().userId, reward.reviewId, reward.operation, reward.pointDelta, reward.reason, reward.created_at))
                 .from(reward)

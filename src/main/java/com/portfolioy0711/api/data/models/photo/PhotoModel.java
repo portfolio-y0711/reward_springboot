@@ -21,14 +21,14 @@ public class PhotoModel {
     }
 
     public List<Photo> findPhotos() {
-        QPhoto photo = QPhoto.photo;
+        final QPhoto photo = QPhoto.photo;
         return query.select(photo)
                 .from(photo)
                 .fetch();
     }
 
     public Photo findPhotoByPhotoId(String photoId) {
-       QPhoto photo = QPhoto.photo; 
+       final QPhoto photo = QPhoto.photo;
        return query.select(photo)
                .from(photo)
                .where(photo.photoId.eq(photoId))

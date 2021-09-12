@@ -21,7 +21,7 @@ public class ReviewModel {
     private final JPAQueryFactory query;
 
     public boolean checkRecordExistsByReviewId(String reviewId) {
-        QReview review = QReview.review;
+        final QReview review = QReview.review;
         long result = query.from(review)
                 .where(review.reviewId.eq(reviewId))
                 .fetchCount();
@@ -33,13 +33,13 @@ public class ReviewModel {
     }
 
     public List<Review> findReviews() {
-        QReview review = QReview.review;
+        final QReview review = QReview.review;
         return query.selectFrom(review)
                 .fetch();
     }
 
     public void updateReview(String reviewId, String content, Set<Photo> photos) {
-        QReview review = QReview.review;
+        final QReview review = QReview.review;
         query.update(review)
             .set(review.content, content)
             .set(review.photos, photos)
@@ -63,10 +63,10 @@ public class ReviewModel {
 //    }
 
     public List<ReviewResponse> findReviewsByUserIdAndPlaceId(String userId, String placeId) {
-        QReview review = QReview.review;
-        QPlace place = QPlace.place;
-        QUser user = QUser.user;
-        QPhoto photo = QPhoto.photo;
+        final QReview review = QReview.review;
+        final QPlace place = QPlace.place;
+        final QUser user = QUser.user;
+        final QPhoto photo = QPhoto.photo;
 
         return query.select(review, place, user)
             .from(review)
@@ -88,10 +88,10 @@ public class ReviewModel {
     }
 
     public List<ReviewResponse> findReviewsByUserId(String userId) {
-        QReview review = QReview.review;
-        QPlace place = QPlace.place;
-        QUser user = QUser.user;
-        QPhoto photo = QPhoto.photo;
+        final QReview review = QReview.review;
+        final QPlace place = QPlace.place;
+        final QUser user = QUser.user;
+        final QPhoto photo = QPhoto.photo;
 
         return query.select(review, place, user)
                 .from(review)
@@ -114,10 +114,10 @@ public class ReviewModel {
     }
 
     public ReviewResponse findReviewsByReviewId(String reviewId) {
-        QReview review = QReview.review;
-        QPlace place = QPlace.place;
-        QUser user = QUser.user;
-        QPhoto photo = QPhoto.photo;
+        final QReview review = QReview.review;
+        final QPlace place = QPlace.place;
+        final QUser user = QUser.user;
+        final QPhoto photo = QPhoto.photo;
 
         ReviewResponse found;
         try {

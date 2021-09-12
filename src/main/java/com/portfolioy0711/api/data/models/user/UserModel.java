@@ -23,17 +23,17 @@ public class UserModel {
     }
 
     public Integer findUserRewardPoint(String userId) {
-        QUser user = QUser.user;
+        final QUser user = QUser.user;
         return query
                 .select(user.rewardPoint)
                 .from(user)
                 .where(user.userId.eq(userId)).fetchOne();
     }
     public List<UserRewardReponse> findUserRewards(String userId) {
-        QUser user = QUser.user;
-        QBase base = QBase.base;
-        QReview review = QReview.review;
-        QReward reward = QReward.reward;
+        final QUser user = QUser.user;
+        final QBase base = QBase.base;
+        final QReview review = QReview.review;
+        final QReward reward = QReward.reward;
 
         return query
                 .select(new QUserRewardReponse(reward.rewardId, reward.user().userId, reward.reviewId, reward.operation, reward.pointDelta, reward.reason, base.created_at))
@@ -45,7 +45,7 @@ public class UserModel {
 
     @Transactional
     public long updateRewardPoint(String userId, Integer rewardPoint) {
-       QUser user = QUser.user;
+       final QUser user = QUser.user;
        long result = 0L;
        try {
            result = query
@@ -60,7 +60,7 @@ public class UserModel {
     }
 
     public User findUserByUserId(String userId) {
-        QUser user = QUser.user;
+        final QUser user = QUser.user;
         return query
                 .selectFrom(user)
                 .where(user.userId.eq(userId))

@@ -29,9 +29,9 @@ public class AddReviewActionHandler implements ActionHandler {
     @Transactional
     @Override
     public void handleEvent(Object event) {
-        ReviewEventDto eventInfo = (ReviewEventDto) event;
+        final ReviewEventDto eventInfo = (ReviewEventDto) event;
         logger.info(String.format("[EVENT: ReviewEventActionHandler (%s)] started process ========================START", eventInfo.getAction()));
-        ReviewModel reviewModel = eventDatabase.getReviewModel();
+        final ReviewModel reviewModel = eventDatabase.getReviewModel();
 
         boolean isDuplicate = reviewModel.checkRecordExistsByReviewId(eventInfo.getReviewId());
 
@@ -40,9 +40,9 @@ public class AddReviewActionHandler implements ActionHandler {
             throw new DuplicateRecordException("duplicate record exist by that reviewId");
         }
 
-        Integer reviewCount = reviewModel.findReviewCountsByPlaceId(eventInfo.getPlaceId());
+        final Integer reviewCount = reviewModel.findReviewCountsByPlaceId(eventInfo.getPlaceId());
 
-        boolean isRewardable = (reviewCount == 0);
+        final boolean isRewardable = (reviewCount == 0);
 
         logger.info(String.format("\t‣" +"︎\tplace id : %s", eventInfo.getPlaceId()));
         logger.info(String.format("\t‣" +"\treview counts: %s", reviewCount));
@@ -50,34 +50,34 @@ public class AddReviewActionHandler implements ActionHandler {
 
 
         if (isRewardable) {
-            PlaceModel placeModel = eventDatabase.getPlaceModel();
-            Place place = placeModel.findPlaceByPlaceId(eventInfo.getPlaceId());
-            Integer bonusPoint = place.getBonusPoint();
+            final PlaceModel placeModel = eventDatabase.getPlaceModel();
+            final Place place = placeModel.findPlaceByPlaceId(eventInfo.getPlaceId());
+            final Integer bonusPoint = place.getBonusPoint();
 
             logger.info("\t‣" +"\tcalculate review points");
             logger.info(String.format("\t‣" +"\tbonusPoint: %s", bonusPoint));
 
-            Integer contentPoint = eventInfo.getContent().length() > 1 ? 1 : 0;
-            Integer photosPoint = eventInfo.getAttachedPhotoIds().length > 1 ? 1 : 0;
-            Integer addPoint = contentPoint + photosPoint + bonusPoint;
+            final Integer contentPoint = eventInfo.getContent().length() > 1 ? 1 : 0;
+            final Integer photosPoint = eventInfo.getAttachedPhotoIds().length > 1 ? 1 : 0;
+            final Integer addPoint = contentPoint + photosPoint + bonusPoint;
 
             logger.info(String.format("\t\t+ content point: %s", contentPoint));
             logger.info(String.format("\t\t+ photos point: %s", photosPoint));
             logger.info(String.format("\t\t= total point : %s", addPoint));
 
-            UserModel userModel = eventDatabase.getUserModel();
-            User user = userModel.findUserByUserId(eventInfo.getUserId());
+            final UserModel userModel = eventDatabase.getUserModel();
+            final User user = userModel.findUserByUserId(eventInfo.getUserId());
 
-            Integer currPoint = userModel.findUserRewardPoint(eventInfo.getUserId());
+            final Integer currPoint = userModel.findUserRewardPoint(eventInfo.getUserId());
 
             logger.info(String.format("\t‣" +"\tuser's current rewards point: %s", currPoint));
             logger.info(String.format("\t‣" +"\tuser's next rewards point: %s", currPoint + addPoint));
 
-            String addOperation = "ADD";
-            String addReason = "NEW";
+            final String addOperation = "ADD";
+            final String addReason = "NEW";
 
             logger.info("\ttransaction started ------------------------------------BEGIN");
-            Review review = reviewModel.save(
+            final Review review = reviewModel.save(
                     Review
                             .builder()
                             .reviewId(eventInfo.getReviewId())
@@ -93,9 +93,9 @@ public class AddReviewActionHandler implements ActionHandler {
             place.getReviews().add(review);
             placeModel.save(place);
 
-            UUID uuid = UUID.randomUUID();
+            final UUID uuid = UUID.randomUUID();
 
-            RewardModel rewardModel = eventDatabase.getRewardModel();
+            final RewardModel rewardModel = eventDatabase.getRewardModel();
 
             rewardModel.save(
                 Reward
@@ -110,9 +110,9 @@ public class AddReviewActionHandler implements ActionHandler {
             );
 
             logger.info(String.format("\t[✔︎] REWARDS %s record created", addOperation));
-            PhotoModel photoModel = eventDatabase.getPhotoModel();
+            final PhotoModel photoModel = eventDatabase.getPhotoModel();
 
-            String[] photoIds = eventInfo.getAttachedPhotoIds();
+            final String[] photoIds = eventInfo.getAttachedPhotoIds();
             Arrays.stream(photoIds)
                     .map(photoId -> new Photo(photoId, review))
                     .forEach(photoModel::save);

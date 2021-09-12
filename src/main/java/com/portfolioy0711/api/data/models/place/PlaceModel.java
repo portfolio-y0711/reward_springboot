@@ -23,7 +23,7 @@ public class PlaceModel {
     }
 
     public Place findPlaceByPlaceId(String placeId) {
-        QPlace place = QPlace.place;
+        final QPlace place = QPlace.place;
         return query
                 .select(place)
                 .from(place)
