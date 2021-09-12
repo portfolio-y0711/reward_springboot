@@ -23,10 +23,10 @@ public class AddReviewActionHandlerTest {
     @Test
     @Transactional
     public void addReviewActionHandlerTest() {
-        AddReviewActionHandler addReviewActionHandler = new AddReviewActionHandler(eventDatabase);
+        final AddReviewActionHandler addReviewActionHandler = new AddReviewActionHandler(eventDatabase);
 
-        UserModel userModel = eventDatabase.getUserModel();
-        PlaceModel placeModel = eventDatabase.getPlaceModel();
+        final UserModel userModel = eventDatabase.getUserModel();
+        final PlaceModel placeModel = eventDatabase.getPlaceModel();
 
         userModel.save(
                 User.builder()
@@ -45,7 +45,7 @@ public class AddReviewActionHandlerTest {
                         .build()
         );
 
-        ReviewEventDto eventInfo = ReviewEventDto
+        final ReviewEventDto eventInfo = ReviewEventDto
                 .builder()
                 .type("REVIEW")
                 .action("ADD")

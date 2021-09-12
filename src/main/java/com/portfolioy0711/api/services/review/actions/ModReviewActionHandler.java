@@ -75,12 +75,14 @@ public class ModReviewActionHandler implements ActionHandler {
             logger.info(String.format("\t\t+ photos point: %s", photosPoint));
             logger.info(String.format("\t\t= total point : %s", totalPoint));
 
-            int diff = totalPoint - latestRewardRecord.getPointDelta();
+            final int diff = totalPoint - latestRewardRecord.getPointDelta();
             logger.info(String.format("\t‣" +"\tpoint diff: %s", diff));
 
-            if (diff == 0) {
-                logger.info("\ttransaction started ------------------------------------BEGIN");
-            } else {
+            final boolean isPointUpdateNeeded = (diff != 0);
+
+            logger.info("\ttransaction started ------------------------------------BEGIN");
+
+            if (isPointUpdateNeeded) {
                 final String subtract_operation = "SUB";
                 final String subtract_reason = "MOD";
 
@@ -93,8 +95,6 @@ public class ModReviewActionHandler implements ActionHandler {
 
                 logger.info(String.format("\t‣" +"\tuser's current rewardPoint: %s", currPoint));
                 logger.info(String.format("\t‣" +"\tuser's next rewardPoint: %s", currPoint + diff));
-
-                logger.info("\ttransaction started ------------------------------------BEGIN");
 
                 rewardModel.save(
                         Reward.builder()
@@ -127,43 +127,45 @@ public class ModReviewActionHandler implements ActionHandler {
                 );
                 logger.info("\t[✔︎] USERS total rewardPoint updated");
             }
-
-            final ReviewResponse currentReview = reviewModel.findReviewInfoByReviewId(eventInfo.getReviewId());
-
-            final ArrayList<String> currentPhotoIds = (ArrayList<String>) currentReview.getPhotoIds().stream().collect(Collectors.toList());
-            final ArrayList<String> newPhotoIds = (ArrayList<String>) Arrays.stream(eventInfo.getAttachedPhotoIds()).collect(Collectors.toList());
-
-            final String[] add_photo_ids = Arrays.stream(eventInfo.getAttachedPhotoIds())
-                    .filter(photoId -> !currentPhotoIds.contains(photoId))
-                    .toArray(String[]::new);
-
-            final String[] delete_photo_ids = currentPhotoIds.stream()
-                    .filter(currentPhotoId -> !newPhotoIds.contains(currentPhotoId))
-                    .toArray(String[]::new);
-
-            final PhotoModel photoModel = eventDatabase.getPhotoModel();
-
-            if (add_photo_ids.length > 0 || delete_photo_ids.length > 0) {
-                final Review review = reviewModel.findReviewByReviewId(eventInfo.getReviewId());
-
-                Arrays.stream(add_photo_ids)
-                        .map(photoId -> new Photo(photoId, review))
-                        .forEach(photoModel::save);
-
-                Arrays.stream(delete_photo_ids)
-                        .forEach(photoModel::remove);
-
-                logger.info("\t[✔︎] PHOTOS has been updated");
-            }
-
-            reviewModel.updateReview(
-                    eventInfo.getReviewId(),
-                    eventInfo.getContent()
-            );
-
-            logger.info("\t[✔︎] REVIEWS review has been updated");
-            logger.info("\ttransaction finished -------------------------------------END");
+        } else {
+            logger.info("\ttransaction started ------------------------------------BEGIN");
         }
+
+        final ReviewResponse currentReview = reviewModel.findReviewInfoByReviewId(eventInfo.getReviewId());
+        final ArrayList<String> currentPhotoIds = (ArrayList<String>) currentReview.getPhotoIds().stream().collect(Collectors.toList());
+        final ArrayList<String> newPhotoIds = (ArrayList<String>) Arrays.stream(eventInfo.getAttachedPhotoIds()).collect(Collectors.toList());
+
+        final String[] add_photo_ids = Arrays.stream(eventInfo.getAttachedPhotoIds())
+                .filter(photoId -> !currentPhotoIds.contains(photoId))
+                .toArray(String[]::new);
+
+        final String[] delete_photo_ids = currentPhotoIds.stream()
+                .filter(currentPhotoId -> !newPhotoIds.contains(currentPhotoId))
+                .toArray(String[]::new);
+
+        final PhotoModel photoModel = eventDatabase.getPhotoModel();
+
+        if (add_photo_ids.length > 0 || delete_photo_ids.length > 0) {
+            final Review review = reviewModel.findReviewByReviewId(eventInfo.getReviewId());
+
+            Arrays.stream(add_photo_ids)
+                    .map(photoId -> new Photo(photoId, review))
+                    .forEach(photoModel::save);
+
+            Arrays.stream(delete_photo_ids)
+                    .forEach(photoModel::remove);
+
+            logger.info("\t[✔︎] PHOTOS has been updated");
+        }
+
+        reviewModel.updateReview(
+                eventInfo.getReviewId(),
+                eventInfo.getContent()
+        );
+
+        logger.info("\t[✔︎] REVIEWS review has been updated");
+        logger.info("\ttransaction finished -------------------------------------END");
+
         logger.info("===================================================================================END");
     }
 

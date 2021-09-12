@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Set;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
 
@@ -39,13 +38,17 @@ public class ReviewModel {
     }
 
     @Transactional
-    public void updateReview(String reviewId, String content) {
+    public long updateReview(String reviewId, String content) {
         final QReview review = QReview.review;
-        query.update(review)
+        return query.update(review)
                 .set(review.content, content)
                 .where(review.reviewId.eq(reviewId))
                 .execute();
+    }
 
+    @Transactional
+    public void remove(String reviewId) {
+       userCmdRepository.deleteById(reviewId);
     }
 
 //    public List<Review> findReviewsByPlaceId(String placeId) {
