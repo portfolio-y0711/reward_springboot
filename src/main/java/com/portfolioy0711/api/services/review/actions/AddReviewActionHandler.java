@@ -9,7 +9,7 @@ import com.portfolioy0711.api.data.models.user.UserModel;
 import com.portfolioy0711.api.typings.ActionHandler;
 import com.portfolioy0711.api.typings.dto.ReviewEventDto;
 import com.portfolioy0711.api.typings.exception.DuplicateRecordException;
-import com.portfolioy0711.api.typings.vo.BooleanType;
+import com.portfolioy0711.api.typings.vo.event.BooleanValueEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.portfolioy0711.api.data.EventDatabase;
@@ -82,7 +82,7 @@ public class AddReviewActionHandler implements ActionHandler {
                             .builder()
                             .reviewId(eventInfo.getReviewId())
                             .content(eventInfo.getContent())
-                            .rewarded(BooleanType.TRUE.getValue())
+                            .rewarded(BooleanValueEnum.TRUE.getValue())
                             .user(user)
                             .place(place)
                             .build()

@@ -1,12 +1,12 @@
-package com.portfolioy0711.api.typings.vo;
+package com.portfolioy0711.api.typings.vo.event;
 
-public enum BooleanType {
+public enum BooleanValueEnum {
     FALSE(0),
     TRUE(1);
 
     private int value;
 
-    private BooleanType(int value) {
+    private BooleanValueEnum(int value) {
        this.value = value;
     }
 

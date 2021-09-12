@@ -1,10 +1,10 @@
-package com.portfolioy0711.api.typings.vo;
+package com.portfolioy0711.api.typings.vo.event;
 
-public enum ReviewActionType {
-    ADD {
+public enum RewardReasonEnum {
+    NEW {
         @Override
         public String toString() {
-            return "ADD";
+            return "NEW";
         }
     },
     MOD {
@@ -18,5 +18,12 @@ public enum ReviewActionType {
         public String toString() {
             return "DEL";
         }
+    },
+    RED {
+        @Override
+        public String toString() {
+            return "DEL";
+        }
     }
 }
+
