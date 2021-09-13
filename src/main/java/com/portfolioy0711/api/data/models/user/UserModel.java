@@ -43,6 +43,7 @@ public class UserModel {
                 .fetch();
     }
 
+
     @Transactional
     public long updateRewardPoint(String userId, Integer rewardPoint) {
        final QUser user = QUser.user;

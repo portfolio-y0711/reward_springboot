@@ -8,6 +8,8 @@ import com.portfolioy0711.api.data.models.place.PlaceModel;
 import com.portfolioy0711.api.data.models.user.UserModel;
 import com.portfolioy0711.api.services.review.actions.AddReviewActionHandler;
 import com.portfolioy0711.api.typings.dto.ReviewEventDto;
+import com.portfolioy0711.api.typings.vo.event.EventTypeEnum;
+import com.portfolioy0711.api.typings.vo.event.ReviewActionEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,8 +49,8 @@ public class AddReviewActionHandlerTest {
 
         final ReviewEventDto eventInfo = ReviewEventDto
                 .builder()
-                .type("REVIEW")
-                .action("ADD")
+                .type(EventTypeEnum.REVIEW.getEventType())
+                .action(ReviewActionEnum.ADD.getReviewActionType())
                 .content("좋아요")
                 .attachedPhotoIds(new String[] {
                     "e4d1a64e-a531-46de-88d0-ff0ed70c0bb8",

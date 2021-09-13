@@ -43,6 +43,17 @@ public class RewardModel {
                 .fetch();
     }
 
+    public List<UserRewardReponse> findRewardsByUserIdAndReviewId(String userId, String reviewId) {
+        final QReward reward = QReward.reward;
+        final QUser user = QUser.user;
+
+        return query.select(new QUserRewardReponse(reward.rewardId, reward.user().userId, reward.reviewId, reward.operation, reward.pointDelta, reward.reason, reward.created_at))
+                .from(reward)
+                .join(reward.user(), user)
+                .where(reward.user().userId.eq(userId))
+                .fetch();
+    }
+
     public UserRewardReponse findLatestRewardByUserIdAndReviewId(String userId, String reviewId) {
         final QUser user = QUser.user;
         final QReward reward = QReward.reward;

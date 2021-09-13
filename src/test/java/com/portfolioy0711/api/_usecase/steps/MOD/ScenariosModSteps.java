@@ -10,11 +10,13 @@ import com.portfolioy0711.api.data.models.review.ReviewModel;
 import com.portfolioy0711.api.data.models.reward.RewardModel;
 import com.portfolioy0711.api.data.models.user.UserModel;
 import com.portfolioy0711.api.services.review.actions.ModReviewActionHandler;
+import com.portfolioy0711.api.typings.dto.ReviewEventDto;
 import com.portfolioy0711.api.typings.response.ReviewResponse;
 import com.portfolioy0711.api.typings.response.UserRewardReponse;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
 import org.junit.Ignore;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.slf4j.Logger;
@@ -142,26 +144,49 @@ public class ScenariosModSteps {
         assertTrue(new ReflectionEquals(expected, excludeFields).matches(actual));
     }
 
-//    @Given("유저의 현재 표인트 총점은 아래와 같음_2")
-//    public void currentPoint(List<Map<String, String>> reviews){
-//        assertEquals("!!!", reviews);
-//    }
-//
-//    @When("유저가 아래와 같이 작성했던 리뷰를 수정함_2")
-//    public void reviewCreated(List<Map<String, String>> reviews){
-//        assertEquals("!!!", reviews);
-//    }
-//
+    @Given("유저의 현재 포인트 총점은 아래와 같음_2")
+    public void currentPoint(List<Map<String, String>> totalPoints){
+        String userId = totalPoints.get(0).get("userId");
+        int expected = Integer.parseInt(totalPoints.get(0).get("totalPoint"));
+        int actual = userModel.findUserRewardPoint(userId);
+
+        assertEquals(expected, actual);
+    }
+
+    @When("유저가 아래와 같이 작성했던 리뷰를 수정함_2")
+    public void reviewCreated(List<Map<String, String>> reviewEvents){
+        Map<String, String> reviewEvent = reviewEvents.get(0);
+        String type = reviewEvent.get("type");
+        String action = reviewEvent.get("action");
+        String reviewId = reviewEvent.get("reviewId");
+        String content = reviewEvent.get("content");
+        String[] attachedPhotoIds = reviewEvent.get("attachedPhotoIds").split(",");
+        String userId = reviewEvent.get("userId");
+        String placeId = reviewEvent.get("placeId");
+
+        ReviewEventDto eventInfo = ReviewEventDto.builder()
+                .type(type)
+                .userId(userId)
+                .reviewId(reviewId)
+                .placeId(placeId)
+                .attachedPhotoIds(attachedPhotoIds)
+                .content(content)
+                .action(action)
+                .build();
+
+        modReviewActionHandler.handleEvent(eventInfo);
+    }
+
 //    @Then("유저의 리워드 레코드가 아래와 같이 변경됨_2")
 //    public void rewardCreated(List<Map<String, String>> rewards){
-////        assertEquals("!!!", rewards);
+//        assertEquals("!!!", rewards);
 //    }
-//
+
 //    @And("유저의 포인트 총점이 아래와 같아짐_2")
 //    public void order_response_equals(List<Map<String, String>> rewardPoints){
 ////        assertEquals("!!!", rewardPoints);
 //    }
-//
+
 //    @And("유저의 리뷰 레코드가 아래와 같이 변경됨_2")
 //    public void order_response_includes(List<Map<String, String>> reviews){
 ////        assertEquals("!!!", reviews);

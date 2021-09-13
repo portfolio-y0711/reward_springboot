@@ -32,7 +32,7 @@ public class ReviewEventActionRouter implements EventRouter {
     @Override
     public void route (Object body) throws JsonProcessingException, ParseException {
         EventValidator eventValidator = new EventValidator(body);
-        eventValidator.validate("action", ReviewActionEnum.getActionTypes());
+        eventValidator.validate("action", ReviewActionEnum.getReviewActionTypes());
         ReviewEventDto eventInfo = eventValidator.transform(ReviewEventDto.class);
         String action = eventInfo.getAction();
         routes.get(action).handleEvent(eventInfo);

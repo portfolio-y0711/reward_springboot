@@ -49,9 +49,12 @@ public class DataSeeer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-            if (Arrays.stream(env.getActiveProfiles()).collect(Collectors.toList()).contains("production")) {
-                seedUsers();
-                seedPlaces();
-            }
+        System.out.println(Arrays.toString(env.getActiveProfiles()));
+
+        final boolean isProduction = Arrays.stream(env.getActiveProfiles()).collect(Collectors.toList()).contains("production") || Arrays.stream(args).collect(Collectors.toList()).contains("production");
+        if (isProduction) {
+            seedUsers();
+            seedPlaces();
+        }
     }
 }

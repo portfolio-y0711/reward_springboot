@@ -13,12 +13,12 @@ public enum ReviewActionEnum {
         this.actionType = actionType;
     }
 
-    public String getEventType() {
+    public String getReviewActionType() {
         return this.actionType;
     }
 
-    public static String[] getActionTypes() {
-        return Stream.of(values()).map(e -> e.getEventType()).toArray(String[]::new);
+    public static String[] getReviewActionTypes() {
+        return Stream.of(values()).map(e -> e.getReviewActionType()).toArray(String[]::new);
     }
 
     public static Stream<ReviewActionEnum> stream() {

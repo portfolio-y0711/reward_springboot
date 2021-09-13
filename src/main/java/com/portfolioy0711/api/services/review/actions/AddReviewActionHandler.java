@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.UUID;
 
 public class AddReviewActionHandler implements ActionHandler {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger("aaa");
     private final EventDatabase eventDatabase;
 
     public AddReviewActionHandler(EventDatabase eventDatabase) {

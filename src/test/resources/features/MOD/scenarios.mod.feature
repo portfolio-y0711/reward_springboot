@@ -23,11 +23,11 @@ Rule: 유저가 수정한 글이 리뷰 리워드 대상일 경우, 리뷰 포�
 
         Given 유저의 현재 포인트 총점은 아래와 같음_2
             | userId                                | totalPoint |
-            | 3ede0ef2-92b7-4817-a5f3-0c575361f745  | 1          |
+            | b87d09e5-e97e-4588-badb-b5599ef95e40  | 1          |
 
         When 유저가 아래와 같이 작성했던 리뷰를 수정함_2
-            | type   | action | reviewId                              | content | attachedPhotoIds | userId                               | placeId                              |
-            | REVIEW | MOD    | 240a0658-dc5f-4878-9831-ebb7b26687772 | 좋아요    |                  | 3ede0ef2-92b7-4817-a5f3-0c575361f745 |  2e4baf1c-5acb-4efb-a1af-eddada31b00f|
+            | type   | action | reviewId                              | content | attachedPhotoIds                      | userId                               | placeId                              |
+            | REVIEW | MOD    | 240a0658-dc5f-4878-9831-ebb7b26687772 | 좋아요    | 49111fdf-ee89-4ee1-9086-24e4a4f36967  | 3ede0ef2-92b7-4817-a5f3-0c575361f745 |  2e4baf1c-5acb-4efb-a1af-eddada31b00f|
 
         Then 유저의 리워드 레코드가 아래와 같이 변경됨_2
             | userId                               | reviewId                              | operation | pointDelta | reason |

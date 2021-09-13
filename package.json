@@ -1,0 +1,11 @@
+{
+  "name": "triple_springboot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "mvn spring-boot:run -Dspring-boot.run.arguments=--spring.profiles.active=production"
+  },
+  "repository": "https://github.com/portfolio-y0711/reward_springboot.git",
+  "author": "portfolio-y0711 <portfolio-y0711@gmail.com>",
+  "license": "MIT"
+}
