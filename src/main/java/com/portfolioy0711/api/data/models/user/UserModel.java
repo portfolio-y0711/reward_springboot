@@ -22,7 +22,7 @@ public class UserModel {
         return userCmdRepository.save(user);
     }
 
-    public Integer findUserRewardPoint(String userId) {
+    public int findUserRewardPoint(String userId) {
         final QUser user = QUser.user;
         return query
                 .select(user.rewardPoint)
@@ -57,6 +57,9 @@ public class UserModel {
            System.out.println(e);
        }
        return result;
+    }
+    public List<Object> findUserCount() {
+        return userCmdRepository.getUserCount();
     }
 
     public User findUserByUserId(String userId) {

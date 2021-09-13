@@ -1,12 +1,21 @@
 package com.portfolioy0711.api._usecase.steps.DEL;
 
 import com.portfolioy0711.api._usecase.config.TestConfig;
+import com.portfolioy0711.api.data.EventDatabase;
+import com.portfolioy0711.api.data.entities.Place;
+import com.portfolioy0711.api.data.entities.User;
+import com.portfolioy0711.api.data.models.place.PlaceModel;
+import com.portfolioy0711.api.data.models.review.ReviewModel;
+import com.portfolioy0711.api.data.models.reward.RewardModel;
+import com.portfolioy0711.api.data.models.user.UserModel;
+import com.portfolioy0711.api.services.review.actions.ModReviewActionHandler;
+import io.cucumber.java.BeforeStep;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Before;
 import org.junit.Ignore;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
@@ -14,8 +23,43 @@ import java.util.Map;
 @Ignore
 public class ScenariosDelSteps {
 
-    @Before
+    @Autowired
+    private PlaceModel placeModel;
+
+    @Autowired
+    private UserModel userModel;
+
+    @Autowired
+    private ReviewModel reviewModel;
+
+    @Autowired
+    private RewardModel rewardModel;
+
+    @Autowired
+    private EventDatabase eventDatabase;
+
+    private ModReviewActionHandler modReviewActionHandler;
+
+    @BeforeStep
     public void setUp() {
+//        modReviewActionHandler = new ModReviewActionHandler(eventDatabase);
+//        placeModel = eventDatabase.getPlaceModel();
+//        userModel = eventDatabase.getUserModel();
+//        placeModel.save(
+//                Place.builder()
+//                        .bonusPoint(1)
+//                        .country("호주")
+//                        .name("시드니")
+//                        .placeId("cd1aa206-5768-4cdd-b054-661b6b35d687")
+//                        .build()
+//        );
+//        userModel.save(
+//                User.builder()
+//                        .rewardPoint(3)
+//                        .userId("b87d09e5-e97e-4588-badb-b5599ef95e40")
+//                        .name("Jenny")
+//                        .build()
+//        );
     }
 
     @Given("아래와 같이 특정 장소가 등록되어 있음(DEL)")

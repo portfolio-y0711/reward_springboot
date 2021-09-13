@@ -13,9 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @SpringBootTest
 public class ReviewModelTest {
@@ -110,7 +107,7 @@ public class ReviewModelTest {
 //        );
 
         System.out.println(
-            reviewModel.findReviewsByUserIdAndPlaceId(user.getUserId(), place.getPlaceId())
+            reviewModel.findLatestReviewByUserIdAndPlaceId(user.getUserId(), place.getPlaceId())
         );
     }
 }

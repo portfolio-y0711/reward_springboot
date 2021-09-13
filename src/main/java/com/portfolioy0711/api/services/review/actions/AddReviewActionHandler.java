@@ -48,10 +48,25 @@ public class AddReviewActionHandler implements ActionHandler {
         logger.info(String.format("\t‣" +"\treview counts: %s", reviewCount));
         logger.info(String.format("\t‣" +"\treview rewardable?: %s", isRewardable ? "YES": "NO"));
 
+        logger.info("\ttransaction started ------------------------------------BEGIN");
+
+        final PlaceModel placeModel = eventDatabase.getPlaceModel();
+        final Place place = placeModel.findPlaceByPlaceId(eventInfo.getPlaceId());
+        final UserModel userModel = eventDatabase.getUserModel();
+        final User user = userModel.findUserByUserId(eventInfo.getUserId());
+        final Review review = reviewModel.save(
+                Review
+                        .builder()
+                        .reviewId(eventInfo.getReviewId())
+                        .content(eventInfo.getContent())
+                        .rewarded(BooleanValueEnum.TRUE.getValue())
+                        .user(user)
+                        .place(place)
+                        .build()
+        );
+        logger.info("\t[✔︎] REVIEWS review has been created");
 
         if (isRewardable) {
-            final PlaceModel placeModel = eventDatabase.getPlaceModel();
-            final Place place = placeModel.findPlaceByPlaceId(eventInfo.getPlaceId());
             final Integer bonusPoint = place.getBonusPoint();
 
             logger.info("\t‣" +"\tcalculate review points");
@@ -65,9 +80,6 @@ public class AddReviewActionHandler implements ActionHandler {
             logger.info(String.format("\t\t+ photos point: %s", photosPoint));
             logger.info(String.format("\t\t= total point : %s", addPoint));
 
-            final UserModel userModel = eventDatabase.getUserModel();
-            final User user = userModel.findUserByUserId(eventInfo.getUserId());
-
             final Integer currPoint = userModel.findUserRewardPoint(eventInfo.getUserId());
 
             logger.info(String.format("\t‣" +"\tuser's current rewards point: %s", currPoint));
@@ -76,36 +88,21 @@ public class AddReviewActionHandler implements ActionHandler {
             final String addOperation = "ADD";
             final String addReason = "NEW";
 
-            logger.info("\ttransaction started ------------------------------------BEGIN");
-            final Review review = reviewModel.save(
-                    Review
-                            .builder()
-                            .reviewId(eventInfo.getReviewId())
-                            .content(eventInfo.getContent())
-                            .rewarded(BooleanValueEnum.TRUE.getValue())
-                            .user(user)
-                            .place(place)
-                            .build()
-            );
+//            place.getReviews().add(review);
+//            placeModel.save(place);
 
-            logger.info("\t[✔︎] REVIEWS review has been created");
-
-            place.getReviews().add(review);
-            placeModel.save(place);
-
-            final UUID uuid = UUID.randomUUID();
-
+//            final UUID uuid = ;
             final RewardModel rewardModel = eventDatabase.getRewardModel();
 
             rewardModel.save(
                 Reward
                     .builder()
-                    .rewardId(uuid.toString())
+                    .rewardId(UUID.randomUUID().toString())
+                    .reviewId(eventInfo.getReviewId())
                     .operation(addOperation)
                     .pointDelta(currPoint + addPoint)
                     .reason(addReason)
                     .user(user)
-                    .reviewId(eventInfo.getReviewId())
                     .build()
             );
 

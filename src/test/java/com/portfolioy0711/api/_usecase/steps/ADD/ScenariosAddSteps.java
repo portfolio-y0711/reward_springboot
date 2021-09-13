@@ -1,13 +1,11 @@
 package com.portfolioy0711.api._usecase.steps.ADD;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.portfolioy0711.api.data.EventDatabase;
 import com.portfolioy0711.api.data.entities.Place;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.portfolioy0711.api.data.entities.Review;
 import com.portfolioy0711.api.data.entities.User;
 import com.portfolioy0711.api.data.models.place.PlaceModel;
 import com.portfolioy0711.api.data.models.review.ReviewModel;
@@ -15,8 +13,8 @@ import com.portfolioy0711.api.data.models.reward.RewardModel;
 import com.portfolioy0711.api.data.models.user.UserModel;
 import com.portfolioy0711.api.services.review.actions.AddReviewActionHandler;
 import com.portfolioy0711.api.typings.dto.ReviewEventDto;
+import com.portfolioy0711.api.typings.response.ReviewResponse;
 import com.portfolioy0711.api.typings.response.UserRewardReponse;
-import com.querydsl.core.Tuple;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -24,13 +22,16 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Ignore;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Ignore
 public class ScenariosAddSteps {
@@ -47,19 +48,14 @@ public class ScenariosAddSteps {
     private RewardModel rewardModel;
 
     @Autowired
-    private TestRestTemplate testRestTemplate;
-
-    @Autowired
     private EventDatabase eventDatabase;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
     private AddReviewActionHandler addReviewActionHandler;
+    private final Logger logger = LoggerFactory.getLogger(ScenariosAddSteps.class);
 
     @Before
     public void setUp() {
+        addReviewActionHandler = new AddReviewActionHandler(eventDatabase);
         placeModel = eventDatabase.getPlaceModel();
         userModel = eventDatabase.getUserModel();
         placeModel.save(
@@ -128,7 +124,7 @@ public class ScenariosAddSteps {
     public void rewardCreated(List<UserRewardReponse> rewards) throws JsonProcessingException {
         UserRewardReponse expected = rewards.get(0);
         UserRewardReponse actual =  rewardModel.findLatestUserReviewRewardByReviewId(expected.getUserId(), expected.getReviewId());
-        String[] excludeFields = new String[]{ "rewardId" };
+        String[] excludeFields = new String[]{ "rewardId", "created_at" };
         assertTrue(new ReflectionEquals(expected, excludeFields).matches(actual));
     }
 
@@ -138,6 +134,8 @@ public class ScenariosAddSteps {
         String userId = rewardPointInfo.get(0).get("userId");
         int expected = Integer.parseInt(rewardPointInfo.get(0).get("rewardPoint"));
         int actual = userModel.findUserRewardPoint(userId);
+        logger.error(String.format("michael %s", userId));
+        logger.error(String.format("michael %s", actual));
         assertEquals(expected, actual);
     }
 
@@ -147,13 +145,12 @@ public class ScenariosAddSteps {
         Map<String, String> review = reviews.get(0);
         String reviewId = review.get("reviewId");
         String placeId = review.get("placeId");
-        String contentId = review.get("content");
+        String content = review.get("content");
         String[] attachedPhotoIds = review.get("attachedPhotoIds").split(",");
         String userId = review.get("userId");
         int rewarded = Integer.parseInt(review.get("rewarded"));
 
-
-        assertEquals(reviewModel.findReviewsByUserIdAndPlaceId(userId, placeId), "");
+        assertEquals(reviewModel.findLatestReviewByUserIdAndPlaceId(userId, placeId), new ReviewResponse(reviewId, placeId, userId, content, rewarded, Arrays.stream(attachedPhotoIds).collect(Collectors.toSet())));
     }
 }
 

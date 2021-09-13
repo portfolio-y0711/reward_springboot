@@ -8,6 +8,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -16,7 +17,8 @@ import static com.querydsl.core.group.GroupBy.groupBy;
 @Component
 @RequiredArgsConstructor
 public class ReviewModel {
-    private final ReviewCmdRepository userCmdRepository;
+    private final EntityManager em;
+    private final ReviewCmdRepository reviewCmdRepository;
     private final JPAQueryFactory query;
 
     public boolean checkRecordExistsByReviewId(String reviewId) {
@@ -48,7 +50,7 @@ public class ReviewModel {
 
     @Transactional
     public void remove(String reviewId) {
-       userCmdRepository.deleteById(reviewId);
+       reviewCmdRepository.deleteById(reviewId);
     }
 
 //    public List<Review> findReviewsByPlaceId(String placeId) {
@@ -65,7 +67,7 @@ public class ReviewModel {
 //                .fetch();
 //    }
 
-    public List<ReviewResponse> findReviewsByUserIdAndPlaceId(String userId, String placeId) {
+    public ReviewResponse findLatestReviewByUserIdAndPlaceId(String userId, String placeId) {
         final QReview review = QReview.review;
         final QPlace place = QPlace.place;
         final QUser user = QUser.user;
@@ -76,6 +78,7 @@ public class ReviewModel {
                 .join(review.place(), place)
                 .join(review.user(), user)
                 .join(review.photos, photo)
+                .orderBy(review.created_at.desc())
                 .transform(
                         groupBy(review.reviewId)
                                 .list(Projections.constructor(
@@ -87,7 +90,7 @@ public class ReviewModel {
                                         review.rewarded,
                                         GroupBy.set(photo.photoId)
                                 ))
-                );
+                ).get(0);
     }
 
     public List<ReviewResponse> findReviewsByUserId(String userId) {
@@ -123,6 +126,9 @@ public class ReviewModel {
                 .where(review.reviewId.eq(reviewId))
                 .fetchOne();
     }
+    public List<Object[]> findReviewInfoByReviewId_native(String reviewId) {
+       return reviewCmdRepository.findReviewInfoByReviewId_native(reviewId);
+    }
 
     public ReviewResponse findReviewInfoByReviewId(String reviewId) {
         final QReview review = QReview.review;
@@ -151,12 +157,13 @@ public class ReviewModel {
                                     ))
                     ).get(0);
         } catch (IndexOutOfBoundsException ex) {
+            System.out.println(ex.getMessage());
             return null;
         }
         return found;
     }
 
     public Review save(Review review) {
-        return userCmdRepository.save(review);
+        return reviewCmdRepository.save(review);
     }
 }
