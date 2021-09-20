@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "mvn spring-boot:run -Dspring-boot.run.arguments=--spring.profiles.active=production"
+    "start": "mvn spring-boot:run -Dspring-boot.run.arguments=--spring.profiles.active=production",
+    "b": "mvn package spring-boot:repackage",
+    "s": "java -jar target/demo-0.0.1-SNAPSHOT.jar production"
   },
   "repository": "https://github.com/portfolio-y0711/reward_springboot.git",
   "author": "portfolio-y0711 <portfolio-y0711@gmail.com>",
